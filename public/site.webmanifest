@@ -1,0 +1,31 @@
+{
+  "name": "AyurvedaVaidya — Dr. Tejendra Singh",
+  "short_name": "AyurvedaVaidya",
+  "description": "Ayurvedic, nutrition, yoga and mind–body wellness consultations with Dr. Tejendra Singh.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "lang": "en",
+  "theme_color": "#0c2a17",
+  "background_color": "#fbf6ea",
+  "icons": [
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

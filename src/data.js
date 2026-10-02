@@ -1,71 +1,67 @@
 // Language-independent site data. All visible copy lives in src/i18n/*.js.
-
-export const IMG = '/images/v2/'
-const LEGACY = '/images/ayurveda/'
+// Images are referenced by manifest key ("folder/name"); see components/Picture.jsx and scripts/build-images.mjs.
 
 export const CONTACT = {
-  email: 'ayurvedavaidya6@gmail.com',
-  emailHref: 'mailto:ayurvedavaidya6@gmail.com',
+  email: 'info@ayurvedavaidya.com',
+  emailHref: 'mailto:info@ayurvedavaidya.com',
   phone: '+91 78959 11809',
   phoneHref: 'tel:+917895911809',
+  whatsapp: '917895911809',
 }
 
-export const LOGO = `${LEGACY}ayurvedavaidya-logo.webp`
+export const LOGO = 'brand/ayurvedavaidya-logo'
 
 export const DOCTOR_IMAGES = {
-  portrait: `${IMG}dr-tejendra-portrait.webp`,
-  desk: `${IMG}dr-tejendra-desk.webp`,
-  alt: `${IMG}dr-tejendra-alt.webp`,
+  portrait: 'people/dr-tejendra-singh-portrait',
+  desk: 'people/dr-tejendra-singh-desk',
+  profile: 'people/dr-tejendra-singh-profile',
 }
 
 export const QUALIFICATIONS = ['BAMS', 'MD (Ayu.)', 'MAPC (Clin. Psych.)', 'DNHE', 'CCIC', 'CCIM', 'PhD Ayurveda (Sch.)']
 
+/** `articles` and `programs` drive the cross-links between service, program and journal pages. */
 export const SERVICES = [
-  { key: 'ayurveda', icon: 'leaf', image: `${IMG}svc-nadi.webp` },
-  { key: 'nutrition', icon: 'bowl', image: `${IMG}svc-diet.webp` },
-  { key: 'yoga', icon: 'lotus', image: `${IMG}svc-yoga.webp` },
-  { key: 'mind-body-wellness', icon: 'mind', image: `${IMG}svc-counselling.webp` },
+  { key: 'ayurveda', icon: 'leaf', image: 'illustrations/service-nadi-pariksha', articles: ['understanding-prakriti'], programs: ['rejuvenation', 'preventive'] },
+  { key: 'nutrition', icon: 'bowl', image: 'illustrations/service-ayurvedic-diet', articles: ['balanced-ayurvedic-plate'], programs: ['metabolic'] },
+  { key: 'yoga', icon: 'lotus', image: 'illustrations/service-therapeutic-yoga', articles: ['breath-movement-stress'], programs: ['stress'] },
+  { key: 'mind-body-wellness', icon: 'mind', image: 'illustrations/service-counselling', articles: ['breath-movement-stress'], programs: ['stress'] },
 ]
 
 export const PROGRAMS = [
-  { key: 'rejuvenation', image: `${IMG}svc-shirodhara.webp` },
-  { key: 'metabolic', image: `${LEGACY}program-metabolic.webp` },
-  { key: 'stress', image: `${LEGACY}program-stress-sleep.webp` },
-  { key: 'preventive', image: `${IMG}svc-dinacharya.webp` },
+  { key: 'rejuvenation', image: 'illustrations/service-shirodhara', service: 'ayurveda' },
+  { key: 'metabolic', image: 'editorial/program-metabolic', service: 'nutrition' },
+  { key: 'stress', image: 'editorial/program-stress-sleep', service: 'mind-body-wellness' },
+  { key: 'preventive', image: 'illustrations/service-dinacharya', service: 'ayurveda' },
 ]
 
-export const PROCESS_IMAGES = [`${IMG}svc-online.webp`, `${IMG}svc-assessment.webp`, `${IMG}svc-dinacharya.webp`, DOCTOR_IMAGES.desk]
+export const PROCESS_IMAGES = ['illustrations/service-online-consultation', 'illustrations/service-health-assessment', 'illustrations/service-dinacharya', DOCTOR_IMAGES.desk]
 
-export const GALLERY = [
-  { src: `${IMG}clinic-visit-1.webp`, w: 1100, h: 828 },
-  { src: `${IMG}clinic-visit-3.webp`, w: 826, h: 1280 },
-  { src: `${IMG}clinic-visit-4.webp`, w: 960, h: 1280 },
-  { src: `${IMG}clinic-visit-2.webp`, w: 569, h: 1209 },
-  { src: `${IMG}clinic-visit-5.webp`, w: 960, h: 1280 },
-  { src: DOCTOR_IMAGES.alt, w: 1035, h: 1196 },
-]
+export const GALLERY = ['clinic/clinic-visit-01', 'clinic/clinic-visit-03', 'clinic/clinic-visit-04', 'clinic/clinic-visit-02', 'clinic/clinic-visit-05', DOCTOR_IMAGES.profile]
 
 // Real client meetups, academic events and yoga sessions for the homepage hero wall, split into three drifting columns.
-const clientPhoto = (n, w, h, kind) => ({ src: `${IMG}clients/client-${String(n).padStart(2, '0')}.webp`, w, h, kind })
+const clientPhoto = (n, kind) => ({ image: `community/client-${String(n).padStart(2, '0')}`, kind })
 export const CLIENT_WALL = [
-  [clientPhoto(6, 820, 608, 'meetup'), clientPhoto(9, 592, 820, 'event'), clientPhoto(1, 820, 541, 'meetup'), clientPhoto(14, 820, 615, 'yoga'), clientPhoto(12, 615, 820, 'meetup')],
-  [clientPhoto(2, 820, 737, 'meetup'), clientPhoto(8, 820, 820, 'yoga'), clientPhoto(13, 820, 615, 'meetup'), clientPhoto(11, 820, 546, 'event'), clientPhoto(4, 439, 820, 'meetup')],
-  [clientPhoto(7, 820, 608, 'meetup'), clientPhoto(15, 800, 820, 'event'), clientPhoto(10, 820, 379, 'meetup'), clientPhoto(3, 607, 820, 'meetup'), clientPhoto(16, 820, 615, 'yoga'), clientPhoto(5, 820, 486, 'yoga')],
+  [clientPhoto(6, 'meetup'), clientPhoto(9, 'event'), clientPhoto(1, 'meetup'), clientPhoto(14, 'yoga'), clientPhoto(12, 'meetup')],
+  [clientPhoto(2, 'meetup'), clientPhoto(8, 'yoga'), clientPhoto(13, 'meetup'), clientPhoto(11, 'event'), clientPhoto(4, 'meetup')],
+  [clientPhoto(7, 'meetup'), clientPhoto(15, 'event'), clientPhoto(10, 'meetup'), clientPhoto(3, 'meetup'), clientPhoto(16, 'yoga'), clientPhoto(5, 'yoga')],
 ]
-export const CLIENT_AVATARS = [6, 12, 2, 7].map((n) => `${IMG}clients/client-${String(n).padStart(2, '0')}.webp`)
+export const CLIENT_AVATARS = [6, 12, 2, 7].map((n) => `community/client-${String(n).padStart(2, '0')}`)
 
+/** `published` = the date the article was first added to the site (git history, commit 53e996b) — confirm with the client, `service` = related service. */
 export const POSTS = [
-  { slug: 'understanding-prakriti', image: `${LEGACY}article-ayurveda.webp`, minutes: 5 },
-  { slug: 'balanced-ayurvedic-plate', image: `${LEGACY}article-nutrition.webp`, minutes: 4 },
-  { slug: 'breath-movement-stress', image: `${LEGACY}article-yoga.webp`, minutes: 6 },
+  { slug: 'understanding-prakriti', image: 'editorial/article-prakriti', minutes: 5, published: '2026-09-23', service: 'ayurveda' },
+  { slug: 'balanced-ayurvedic-plate', image: 'editorial/article-nutrition', minutes: 4, published: '2026-09-23', service: 'nutrition' },
+  { slug: 'breath-movement-stress', image: 'editorial/article-breathing', minutes: 6, published: '2026-09-23', service: 'yoga' },
 ]
 
 export const IMAGES = {
-  hero: `${IMG}hero-clinic.webp`,
-  cta: `${IMG}cta-botanical.webp`,
-  online: `${IMG}svc-online.webp`,
+  hero: 'illustrations/hero-clinic',
+  cta: 'illustrations/cta-botanical',
+  online: 'illustrations/service-online-consultation',
+  booking: 'illustrations/service-health-assessment',
 }
 
-// FormSubmit (formsubmit.co) relays enquiry form submissions to the clinic inbox. The very first
-// submission sends an activation email to this address; enquiries are delivered once it is confirmed.
-export const FORM_ENDPOINT = `https://formsubmit.co/ajax/${CONTACT.email}`
+// Same-site PHP handler (public/api/contact.php) that sends each enquiry through the clinic's own
+// Zoho mailbox over SMTP. Credentials live on the server only — see docs/HOSTINGER-SMTP-SETUP.md.
+export const FORM_ENDPOINT = '/api/contact.php'
+export const THANK_YOU_PATH = '/thank-you/'

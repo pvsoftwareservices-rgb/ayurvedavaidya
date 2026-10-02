@@ -19,16 +19,16 @@ export default function Footer() {
         <LanguageInline light/>
       </div>
       <nav aria-label={t('footer.quick')}>
-        <h3>{t('footer.quick')}</h3>
+        <h2 className="footer-heading">{t('footer.quick')}</h2>
         {quick.map(([key, to]) => <Link key={key} to={to}>{t(`nav.${key}`)}</Link>)}
       </nav>
       <nav aria-label={t('footer.services')}>
-        <h3>{t('footer.services')}</h3>
+        <h2 className="footer-heading">{t('footer.services')}</h2>
         {SERVICES.map((s) => <Link key={s.key} to={`/services/${s.key}/`}>{t(`services.items.${s.key}.title`)}</Link>)}
         <Link to="/book-consultation/">{t('nav.book')}</Link>
       </nav>
       <div className="footer-contact">
-        <h3>{t('footer.contact')}</h3>
+        <h2 className="footer-heading">{t('footer.contact')}</h2>
         <a href={CONTACT.phoneHref}><Icon name="phone"/>{CONTACT.phone}</a>
         <a href={CONTACT.emailHref}><Icon name="mail"/>{CONTACT.email}</a>
         <p className="footer-clinic"><Icon name="pin"/>{t('contact.clinicValue')}</p>
@@ -36,7 +36,7 @@ export default function Footer() {
     </div>
     <div className="footer-bottom">
       <div className="container">
-        <span>© {new Date().getFullYear()} AyurvedaVaidya.com — {t('footer.rights')}</span>
+        <span suppressHydrationWarning>© {new Date().getFullYear()} AyurvedaVaidya.com — {t('footer.rights')}</span>
         <span className="footer-legal"><Link to="/privacy/">{t('legal.privacy')}</Link><Link to="/terms/">{t('legal.terms')}</Link><Link to="/disclaimer/">{t('legal.disclaimer')}</Link></span>
         <span className="footer-tagline"><Icon name="leaf"/>{t('meta.tagline')}</span>
       </div>

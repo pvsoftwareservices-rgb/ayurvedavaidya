@@ -1,6 +1,13 @@
 node_modules/
 dist/
+dist-ssr/
 .playwright-cli/
 output/
+test-results/
+playwright-report/
 *.log
 branch-source.png
+.env
+.env.*
+!.env.example
+mail-config.php

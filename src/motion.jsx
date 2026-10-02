@@ -10,7 +10,11 @@ export function prefersReducedMotion() {
  * Reveals children once they enter the viewport.
  * Variants: up | left | right | scale | clip | fade
  */
-export function Reveal({ as: Tag = 'div', variant = 'up', delay = 0, className = '', style, children, ...rest }) {
+/**
+ * @param {{ as?: any, variant?: string, delay?: number, className?: string, style?: import('react').CSSProperties,
+ *   children?: import('react').ReactNode, [attr: string]: any }} props
+ */
+export function Reveal({ as: Tag = 'div', variant = 'up', delay = 0, className = '', style = undefined, children = null, ...rest }) {
   const ref = useRef(null)
   // Kept in state (not classList) so re-renders that change `className` never drop the visible state.
   const [visible, setVisible] = useState(false)
@@ -33,7 +37,11 @@ export function Reveal({ as: Tag = 'div', variant = 'up', delay = 0, className =
  * - exit:    element top at viewport top (0) until the element has fully scrolled away (1)
  * - pin:     tall section with a sticky child; 0 at pin start, 1 at pin end
  */
-export function useScrollProgress(ref, { mode = 'through', onProgress } = {}) {
+/**
+ * @param {import('react').RefObject<HTMLElement>} ref
+ * @param {{ mode?: 'through' | 'exit' | 'pin', onProgress?: (progress: number) => void }} [options]
+ */
+export function useScrollProgress(ref, { mode = 'through', onProgress = undefined } = {}) {
   const callbackRef = useRef(onProgress)
   callbackRef.current = onProgress
 

@@ -1,0 +1,10 @@
+/* Self-hosted fonts (bundled by Vite with hashed file names, so they are cached for a year).
+   Each @font-face carries a unicode-range, so browsers only download the subsets a page uses
+   (Latin for English/Spanish, Cyrillic for Russian). font-display: swap keeps text visible while loading.
+   The two Latin files used above the fold are preloaded by scripts/prerender.mjs. */
+@import '@fontsource-variable/manrope/wght.css';
+@import '@fontsource/cormorant-garamond/500.css';
+@import '@fontsource/cormorant-garamond/600.css';
+@import '@fontsource/cormorant-garamond/700.css';
+@import '@fontsource/cormorant-garamond/500-italic.css';
+@import '@fontsource/cormorant-garamond/600-italic.css';

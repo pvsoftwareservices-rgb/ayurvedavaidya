@@ -1,0 +1,13 @@
+# Only contact.php is reachable; the library folder and any other file are refused.
+Options -Indexes
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^lib(/|$) - [F,L]
+</IfModule>
+<IfModule mod_authz_core.c>
+<FilesMatch "\.(json|txt|md)$|^LICENSE$">
+Require all denied
+</FilesMatch>
+</IfModule>
+# Works even without mod_rewrite / mod_authz_core (mod_alias is always present).
+RedirectMatch 403 ^/api/lib(/|$)

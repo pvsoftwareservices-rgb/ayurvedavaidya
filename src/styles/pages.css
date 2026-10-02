@@ -80,7 +80,7 @@
 .booking-aside { position: sticky; top: calc(var(--header-h) + 40px); }
 .expect-list { list-style: none; padding: 0; }
 .expect-list li { display: flex; gap: 18px; padding: 20px 0; border-bottom: 1px solid var(--line); font: 500 21px/1.35 var(--display); }
-.expect-list li span { font-weight: 600; color: var(--gold-600); }
+.expect-list li span { font-weight: 600; color: var(--gold-700); }
 .form-note { display: flex; gap: 12px; margin-top: 28px; padding: 18px; border-radius: 18px; font-size: 14px; color: var(--muted); background: var(--paper); border: 1px solid var(--line); }
 .form-note .icon { color: var(--green-600); }
 .booking-form { display: grid; gap: 18px; padding: clamp(26px, 4vw, 44px); border-radius: 30px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow-lg); }
@@ -113,7 +113,7 @@
 .article-content { max-width: 740px; }
 .article-content p { margin-bottom: 22px; font-size: 18px; line-height: 1.85; color: #33443a; }
 .article-content .article-excerpt { font: italic 500 clamp(23px, 2.3vw, 29px)/1.45 var(--display); color: var(--green-700); padding-bottom: 26px; border-bottom: 1px solid var(--line); margin-bottom: 30px; }
-.back-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 30px; font-size: 14px; font-weight: 700; color: var(--green-600); }
+.back-link { display: inline-flex; align-items: center; gap: 8px; min-height: 28px; margin-bottom: 30px; font-size: 14px; font-weight: 700; color: var(--green-600); }
 .back-link .icon { transition: transform 0.3s; }
 .back-link:hover .icon { transform: translateX(-4px); }
 .article-content .article-disclaimer { display: flex; gap: 12px; margin-top: 36px; padding: 18px 20px; border-radius: 16px; font-size: 14.5px; color: var(--muted); background: var(--paper); border: 1px solid var(--line); }
@@ -158,4 +158,50 @@
   .contact-cards { margin-top: -40px; }
   .booking-form .btn { width: 100%; }
   .service-index { font-size: 64px; }
+}
+
+/* ==========================================================
+   Booking form — field errors, summary, notices, WhatsApp
+   ========================================================== */
+.field { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.booking-form .field > label { display: block; }
+.field .req, .consent .req { color: #a3361f; }
+.field .optional { font-weight: 500; color: var(--muted); }
+.field-hint { font-size: 13px; color: var(--muted); }
+.field-error { display: flex; align-items: flex-start; gap: 6px; font-size: 13.5px; font-weight: 600; color: #a3361f; }
+.field-error .icon { width: 16px; height: 16px; flex: none; margin-top: 2px; stroke-width: 2.4; }
+.field-error[hidden] { display: none; }
+.booking-form [aria-invalid='true'], .has-error .country-picker-value { border-color: #a3361f; box-shadow: 0 0 0 3px rgba(163, 54, 31, 0.12); }
+.form-required-note { margin-top: -10px; font-size: 13.5px; color: var(--muted); }
+.form-summary { padding: 16px 18px; border-radius: 16px; border: 1px solid rgba(163, 54, 31, 0.4); background: #fbefe9; color: #6e2414; font-size: 14px; }
+.form-summary[hidden] { display: none; }
+.form-summary ul { margin: 8px 0 0; padding-left: 18px; }
+.form-summary a { text-decoration: underline; text-underline-offset: 3px; }
+.form-notice { display: grid; gap: 10px; padding: 16px 18px; border-radius: 16px; border: 1px solid rgba(163, 54, 31, 0.4); background: #fbefe9; color: #6e2414; font-size: 14.5px; }
+.form-alternatives { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.form-alternatives a { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; font-weight: 700; color: var(--green-700); text-decoration: underline; text-underline-offset: 3px; }
+.form-alternatives .icon { width: 16px; height: 16px; }
+.form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.booking-form .consent a { color: var(--green-600); text-decoration: underline; text-underline-offset: 3px; }
+.consent-field { display: grid; gap: 8px; }
+.btn-whatsapp { --btn-fill: #1d6b3a; --btn-hover-color: #fff; --btn-glow: rgba(29, 107, 58, 0.5); color: #14532c; background: #e7f4ea; border: 1px solid #9fcdae; }
+/* Honeypot: off-screen (not display:none, which some bots detect), never focusable. */
+.hp-field { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.thank-you-note { font-size: 16px !important; }
+.thank-you-note a { color: var(--gold-300); font-weight: 700; text-decoration: underline; }
+
+/* Helpful links (404 + thank-you), related content */
+.helpful-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: clamp(32px, 5vw, 80px); }
+.helpful-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px 28px; margin: 24px 0 0; padding: 0; list-style: none; }
+.helpful-links .text-link { min-height: 44px; }
+.helpful-contact { display: grid; align-content: start; gap: 12px; padding: 26px; border-radius: 22px; background: var(--paper); border: 1px solid var(--line); }
+.helpful-contact .mini-title { margin: 0 0 4px; }
+.helpful-contact .text-link { min-height: 44px; overflow-wrap: anywhere; }
+.related-programs { display: flex; flex-wrap: wrap; gap: 12px 28px; margin: 0 0 36px; padding: 0; list-style: none; }
+.related-programs .text-link { min-height: 44px; }
+.related-service { display: grid; gap: 12px; margin-bottom: 18px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+.related-service .mini-title { margin: 0; }
+.stack-body .btn-row { align-items: center; }
+@media (max-width: 760px) {
+  .helpful-grid { grid-template-columns: 1fr; }
 }

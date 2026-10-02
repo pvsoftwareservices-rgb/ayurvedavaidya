@@ -21,10 +21,12 @@ const ICONS = {
   heart: <path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20Z"/>,
   spark: <path d="M12 3c.6 4.5 2.5 6.9 7 8-4.5 1.1-6.4 3.5-7 8-.6-4.5-2.5-6.9-7-8 4.5-1.1 6.4-3.5 7-8Z"/>,
   calendar: <><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4m8-4v4"/></>,
+  chat: <path d="M12 3.5a8.5 8.5 0 0 0-7.4 12.7L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5Zm-3 5.2c.3-.4.7-.4 1-.2l.9 1.9c.1.3 0 .6-.2.8l-.5.6c.6 1.2 1.6 2.2 2.8 2.8l.6-.5c.2-.2.5-.3.8-.2l1.9.9c.2.3.2.7-.2 1-.9.9-2.3 1-3.6.4a8.6 8.6 0 0 1-3.9-3.9c-.6-1.3-.5-2.7.4-3.6Z"/>,
   zoom: <><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5M11 8.5v5m-2.5-2.5h5"/></>,
 }
 
-export function Icon({ name = 'leaf', className = '', size }) {
+/** @param {{ name?: string, className?: string, size?: number }} props */
+export function Icon({ name = 'leaf', className = '', size = undefined }) {
   return <svg className={`icon ${className}`} viewBox="0 0 24 24" width={size} height={size} fill="none" aria-hidden="true" focusable="false">{ICONS[name] || ICONS.leaf}</svg>
 }
 
@@ -36,7 +38,12 @@ function trackPointer(event) {
   el.style.setProperty('--my', `${event.clientY - rect.top}px`)
 }
 
-export function Button({ to, href, children, variant = 'gold', icon = 'arrow', className = '', type = 'button', ...rest }) {
+/**
+ * Link (`to`, client-side), anchor (`href`) or button, styled as a button.
+ * @param {{ to?: string, href?: string, children?: import('react').ReactNode, variant?: string, icon?: string | null, className?: string,
+ *   type?: 'button' | 'submit', [attr: string]: any }} props
+ */
+export function Button({ to = undefined, href = undefined, children = null, variant = 'gold', icon = 'arrow', className = '', type = 'button', ...rest }) {
   const classes = `btn btn-${variant} ${className}`
   const content = <><span className="btn-label">{children}</span>{icon && <Icon name={icon} className="btn-icon"/>}</>
   const pointer = { onPointerEnter: trackPointer, onPointerLeave: trackPointer }
@@ -45,11 +52,13 @@ export function Button({ to, href, children, variant = 'gold', icon = 'arrow', c
   return <button className={classes} type={type} {...pointer} {...rest}>{content}</button>
 }
 
-export function Eyebrow({ children, light = false }) {
+/** @param {{ children?: import('react').ReactNode, light?: boolean }} props */
+export function Eyebrow({ children = null, light = false }) {
   return <p className={`eyebrow ${light ? 'eyebrow-light' : ''}`}><span className="eyebrow-mark" aria-hidden="true"/>{children}</p>
 }
 
-export function SectionHead({ eyebrow, title, lead, light = false, align = 'left', id, children }) {
+/** @param {{ eyebrow: string, title: string, lead?: string, light?: boolean, align?: string, id?: string, children?: import('react').ReactNode }} props */
+export function SectionHead({ eyebrow, title, lead = undefined, light = false, align = 'left', id = undefined, children = null }) {
   return <div className={`section-head align-${align}`}>
     <div>
       <Eyebrow light={light}>{eyebrow}</Eyebrow>

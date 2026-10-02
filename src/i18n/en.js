@@ -8,7 +8,7 @@ const en = {
     home: 'Home', about: 'About Dr. Tejendra', services: 'Services', programs: 'Programs', journal: 'Journal', contact: 'Contact',
     book: 'Book a Consultation', open: 'Open navigation', close: 'Close navigation', skip: 'Skip to content',
     megaTag: 'Ayurveda 360°', megaTitle: 'Four disciplines. One personal plan.', allServices: 'Explore all services',
-    language: 'Language', call: 'Call', menu: 'Menu',
+    language: 'Language', call: 'Call', menu: 'Menu', breadcrumb: 'Breadcrumb',
   },
   common: { explore: 'Explore', learnMore: 'Learn more', viewAll: 'View all', step: 'Step', of: 'of' },
   doctor: {
@@ -16,6 +16,7 @@ const en = {
     headline: 'Ayurvedic Physician · Academician · Wellness Expert',
     role: 'Director & CMO, Ayurveda Clinic',
     portraitAlt: 'Dr. Tejendra Singh, Ayurvedic physician, at his consultation desk',
+    profileAlt: 'Dr. Tejendra Singh in a white coat with a stethoscope, seated in his clinic',
     qualifications: {
       'BAMS': 'Ayurvedic Medicine & Surgery',
       'MD (Ayu.)': 'Postgraduate degree in Ayurveda',
@@ -66,7 +67,7 @@ const en = {
     pageLead: 'A connected approach bringing Ayurveda, nutrition, yoga and psychological wellness together in one personal plan.',
     covers: 'What this consultation covers',
     discuss: 'Discuss your needs',
-    others: 'Explore other services',
+    others: 'Explore other services', details: 'Service details', relatedTitle: 'Related programs and articles',
     items: {
       ayurveda: {
         title: 'Ayurveda', subtitle: 'Clinical & Preventive Ayurveda',
@@ -115,7 +116,7 @@ const en = {
     title: 'Guided programs for real-life goals.',
     lead: 'Structured, physician-supervised journeys that combine consultations, therapies and lifestyle guidance.',
     viewAll: 'Explore programs',
-    enquire: 'Enquire about this program',
+    enquire: 'Enquire about this program', related: 'Related service',
     pageTitle: 'Programs designed around real life.',
     pageLead: 'Each program is personalized after a consultation and designed to complement appropriate medical care where needed.',
     items: {
@@ -150,12 +151,13 @@ const en = {
     viewAll: 'View all articles',
     read: 'Read article',
     minRead: 'min read',
-    back: 'Back to journal',
+    back: 'Back to journal', allTitle: 'All articles', moreTitle: 'More from the journal', relatedService: 'Related consultation',
     disclaimer: 'This article is for general education and does not replace individual medical advice.',
     posts: {
       'understanding-prakriti': {
         category: 'Ayurveda basics',
         title: 'Understanding Prakriti: An Introduction to Your Ayurvedic Constitution',
+        seoTitle: 'Understanding Prakriti: Your Ayurvedic Constitution',
         excerpt: 'Why Ayurveda begins with who you are — and how knowing your constitution shapes a truly personal plan.',
         body: [
           'In Ayurveda, every person is born with a unique constitution called Prakriti — a natural balance of the three doshas: Vata, Pitta and Kapha. This balance influences how you digest food, sleep, respond to stress and adapt to the seasons.',
@@ -167,6 +169,7 @@ const en = {
       'balanced-ayurvedic-plate': {
         category: 'Everyday nutrition',
         title: 'Building a Balanced Everyday Plate with Ayurveda and Modern Nutrition',
+        seoTitle: 'A Balanced Everyday Plate: Ayurveda Meets Nutrition',
         excerpt: 'Simple principles that bring Ayurvedic wisdom and nutrition science together at every meal.',
         body: [
           'Ayurveda and modern nutrition agree on more than you might expect: fresh, seasonal, minimally processed food, eaten mindfully and at regular times, forms the foundation of good health.',
@@ -178,6 +181,7 @@ const en = {
       'breath-movement-stress': {
         category: 'Mind–body wellness',
         title: 'How Breath, Movement and Relaxation Support Everyday Stress Management',
+        seoTitle: 'Breath, Movement & Relaxation for Everyday Stress',
         excerpt: 'Small daily practices from yoga and psychology that help the nervous system settle.',
         body: [
           'Stress is a natural response, but when it becomes constant it can affect sleep, digestion, mood and focus. Both Ayurveda and psychology emphasize that the body and mind recover best when given regular moments of rest.',
@@ -202,17 +206,35 @@ const en = {
     modesLabel: 'Consultation modes', modesValue: 'Online · Phone · In-clinic',
     formTitle: 'Request a consultation',
     form: {
-      name: 'Full name', email: 'Email', phone: 'Phone', countryCode: 'Country code', area: 'Preferred consultation area', areaPlaceholder: 'Select an area',
-      mode: 'Consultation mode', modePlaceholder: 'Select a mode', modes: ['Online (video)', 'Phone', 'In-clinic'],
-      date: 'Preferred date', time: 'Preferred time', message: 'Optional message',
-      messagePlaceholder: 'A short note about what you would like support with (no detailed medical history).',
-      consent: 'I agree that AyurvedaVaidya may use these details to respond to my consultation request.',
+      name: 'Full name', email: 'Email', phone: 'Phone', countryCode: 'Country code', area: 'Consultation area', areaPlaceholder: 'Select an area',
+      mode: 'Consultation mode', modePlaceholder: 'Select a mode', modes: { online: 'Online (video)', phone: 'Phone', clinic: 'In-clinic' },
+      date: 'Preferred date', time: 'Preferred time', message: 'Your message', optional: 'optional',
+      requiredNote: 'Fields marked * are required.',
+      phoneHint: 'Choose your country code, then enter your number (10–15 digits in total).',
+      messageHint: 'A short note about what you would like support with (10–2,000 characters). Please do not include detailed medical history.',
+      consent: 'I agree that AyurvedaVaidya may use these details to respond to my consultation request, as described in the', consentShort: 'Consent',
       submit: 'Send request',
-      invalid: 'Please complete all required fields.',
       sending: 'Sending your request…',
-      success: 'Thank you! Your request has been sent. We will contact you shortly to confirm your appointment.',
-      error: 'Sorry, your request could not be sent. Please try again, or email or call us directly.',
-      subject: 'Consultation request',
+      whatsapp: 'Send via WhatsApp', whatsappShort: 'WhatsApp',
+      whatsappIntro: 'Hello Dr. Tejendra, I would like to request a consultation.',
+      summaryTitle: 'Please check the following:',
+      errors: {
+        required: 'This field is required.',
+        nameShort: 'Please enter your full name (at least 2 characters).',
+        messageShort: 'Please write at least 10 characters so we understand your request.',
+        tooLong: 'This is too long — please keep it under {max} characters.',
+        email: 'Enter a valid email address, such as name@example.com.',
+        phone: 'Enter a valid phone number: 10–15 digits including the country code.',
+        pastDate: 'Please choose today or a future date.',
+        invalid: 'Please choose a valid option.',
+        consent: 'Please tick the box to agree, so we can reply to you.',
+      },
+      notices: {
+        offline: 'You appear to be offline. Your details are still in the form — reconnect and press “Send request” again, or contact us directly:',
+        timeout: 'Sending took too long. Your details are still in the form — please try again, or contact us directly:',
+        failed: 'Sorry, we could not deliver your request just now. Your details are still in the form — please try again in a moment, or contact us directly:',
+        rateLimited: 'Several requests were just sent from this connection. Please wait a few minutes before trying again, or contact us directly:',
+      },
     },
     emergency: 'For emergencies, contact your local emergency service. This form is not monitored for urgent care.',
     expectTitle: 'What to expect',
@@ -241,7 +263,7 @@ const en = {
     privacy: 'Privacy Policy', terms: 'Terms of Use', disclaimer: 'Medical & Wellness Disclaimer',
     disclaimerText: 'Information on this website is intended for general educational and wellness purposes and is not a substitute for individual medical advice, diagnosis or emergency care.',
     updatedLabel: 'Last updated',
-    updated: '25 September 2026',
+    updated: '3 October 2026',
     contactTitle: 'Contact us',
     contactText: 'Questions about this page, or requests about your information, can be sent to:',
     related: 'Related pages',
@@ -254,13 +276,22 @@ const en = {
           {
             title: 'Information we collect',
             body: ['When you send a consultation request through our form, we collect:'],
-            list: ['Your full name, email address and phone number (with country code)', 'Your preferred consultation area and consultation mode (online, phone or in-clinic)', 'Your preferred date and time', 'Any optional message you choose to write', 'Your confirmation that we may use these details to respond to your request'],
-            after: ['When you call or email us directly, we receive the details you share, such as your phone number, email address and the content of your message. Please do not send detailed medical history through the website form or by email before your consultation.'],
+            list: ['Your full name, email address and phone number (with country code)', 'Your message', 'If you choose to give them: your preferred consultation area, consultation mode (online, phone or in-clinic), date and time', 'Your confirmation that we may use these details to respond to your request', 'The website page you sent the form from, the date and time it was sent, and the website language you were using'],
+            after: ['When you call, email or message us on WhatsApp directly, we receive the details you share, such as your phone number, email address and the content of your message. Please do not send detailed medical history through the website form or by email before your consultation.'],
+          },
+          {
+            title: 'How the consultation form works',
+            body: [
+              'When you press “Send request”, your details travel over an encrypted (HTTPS) connection to our website server, which emails them straight to our clinic mailbox (info@ayurvedavaidya.com). The form does not keep your details in a database on the website.',
+              'While you fill in the form, your entries are kept in your own browser (session storage) so they are not lost if the page reloads or the connection drops. They are removed when your request is sent or when you close the browser tab.',
+              'To protect the form from spam and abuse, our server keeps a one-way coded (hashed) version of your IP address for up to 10 minutes to limit how many requests can be sent from one connection.',
+              'If you choose “Send via WhatsApp”, your message opens in WhatsApp instead and is handled under WhatsApp’s own privacy policy.',
+            ],
           },
           {
             title: 'Information collected automatically',
-            list: ['Our hosting provider records standard server logs (such as IP address, browser type, date and time, and the page requested) to deliver the website and keep it secure.', 'The website loads fonts from Google Fonts, so your browser connects to Google servers, which receive your IP address.', 'Your chosen website language is saved in your browser (local storage) so the site remembers it on your next visit. It is not used to identify or track you.'],
-            after: ['We do not use analytics, advertising or tracking cookies on this website.'],
+            list: ['Our hosting provider records standard server logs (such as IP address, browser type, date and time, and the page requested) to deliver the website and keep it secure.', 'Your chosen website language is saved in your browser (local storage) so the site remembers it on your next visit. It is not used to identify or track you.'],
+            after: ['Fonts and images are served from our own website, so your browser does not connect to third-party font or analytics services. We do not use analytics, advertising or tracking cookies on this website.'],
           },
           {
             title: 'How we use your information',
@@ -271,7 +302,7 @@ const en = {
           {
             title: 'Service providers who process your information',
             body: ['We share information only with service providers that help us run this website and respond to you:'],
-            list: ['FormSubmit (formsubmit.co), which receives consultation requests from our form and forwards them to our email inbox', 'Google (Gmail, for our email inbox, and Google Fonts)', 'Our website hosting provider'],
+            list: ['Hostinger, our website hosting provider, which runs the website and the script that emails your form request to us', 'Zoho Mail, which hosts our clinic mailbox (info@ayurvedavaidya.com) where enquiries are received, stored and answered', 'WhatsApp (Meta), only if you choose to contact us there'],
             after: ['These providers process information under their own privacy policies and may store it on servers outside India. We may also disclose information when required by law.'],
           },
           { title: 'How long we keep information', body: ['We keep enquiry and appointment details only as long as needed to respond to you, provide your consultation and follow-up care, and meet legal and professional record-keeping requirements. After that, the information is deleted.'] },
@@ -299,7 +330,7 @@ const en = {
           { title: 'Online and phone consultations', body: ['Online and phone consultations need a reliable connection and a private space. The physician may recommend an in-clinic visit or other medical care if an online or phone consultation is not suitable for your situation.'] },
           { title: 'Your responsibilities', body: ['Please give accurate and complete information when you contact us or attend a consultation. You must not misuse the website — for example by sending spam, submitting false requests, attempting to disrupt the website, or using it for any unlawful purpose.'] },
           { title: 'Intellectual property', body: ['The text, photographs, graphics, logo and design of this website belong to AyurvedaVaidya or are used with permission. You may view and share pages for personal, non-commercial use, but you may not copy, reproduce or republish content without our written permission.'] },
-          { title: 'Third-party services and links', body: ['The website relies on third-party services (such as the form service that delivers consultation requests) and may link to other websites. We are not responsible for the content or practices of third-party websites and services.'] },
+          { title: 'Third-party services and links', body: ['The website relies on third-party services (such as our website hosting and email providers) and may link to other websites. We are not responsible for the content or practices of third-party websites and services.'] },
           { title: 'Limitation of liability', body: ['We aim to keep the website accurate and available, but it is provided "as is", without guarantees that it will be error-free or uninterrupted. To the extent permitted by law, we are not liable for any loss arising from use of, or reliance on, the website content. Nothing in these terms limits any liability that cannot be limited under applicable law.'] },
           { title: 'Governing law', body: ['These terms are governed by the laws of India, and any disputes are subject to the jurisdiction of the competent courts in India.'] },
           { title: 'Changes to these terms', body: ['We may update these terms from time to time. The latest version will always be available on this page. Continuing to use the website after changes means you accept the updated terms.'] },
@@ -325,7 +356,8 @@ const en = {
       },
     },
   },
-  notFound: { title: 'Page not found', text: 'The page you are looking for may have moved or no longer exists.', home: 'Back to home' },
+  notFound: { title: 'Page not found', text: 'The page you are looking for may have moved or no longer exists.', home: 'Back to home', linksTitle: 'These pages may help', contactTitle: 'Or contact us directly' },
+  thankYou: { eyebrow: 'Request received', title: 'Thank you — your request has been sent', lead: 'We will reply by phone or email to confirm your consultation. Please keep an eye on your inbox, including the spam folder.', urgent: 'If your request is time-sensitive, please call', linksTitle: 'While you wait' },
 }
 
 export default en

@@ -4,13 +4,29 @@ import { CONTACT, GALLERY, IMAGES, PROGRAMS, QUALIFICATIONS } from '../data'
 import { useI18n } from '../i18n'
 import { Reveal, tilt, useScrollProgress } from '../motion'
 import { Button, Eyebrow, Icon, SectionHead } from '../ui'
+import Picture, { imageMeta } from './Picture'
 
-export function PageHero({ eyebrow, title, lead, image, children }) {
+/** Visible breadcrumb trail (the matching BreadcrumbList JSON-LD comes from src/seo.js). trail: [label, path][] after Home. */
+/** @param {{ trail: [string, string][], light?: boolean }} props */
+export function Breadcrumbs({ trail, light = true }) {
+  const { t } = useI18n()
+  return <nav className={`breadcrumbs ${light ? 'is-light' : ''}`} aria-label={t('nav.breadcrumb')}>
+    <ol>
+      <li><Link to="/">{t('nav.home')}</Link></li>
+      {trail.map(([label, to], i) => <li key={label}>{i < trail.length - 1 ? <Link to={to}>{label}</Link> : <span aria-current="page">{label}</span>}</li>)}
+    </ol>
+  </nav>
+}
+
+/** Inner-page hero. Its background image is the page's LCP element, so it loads eagerly at high priority. */
+/** @param {{ eyebrow: string, title: string, lead?: string, image?: string, crumbs?: [string, string][], children?: import('react').ReactNode }} props */
+export function PageHero({ eyebrow, title, lead = undefined, image = undefined, crumbs = undefined, children = null }) {
   const ref = useRef(null)
   useScrollProgress(ref, { mode: 'exit' })
   return <section ref={ref} className="page-hero">
-    <div className="page-hero-bg" aria-hidden="true"><img src={image || IMAGES.hero} alt=""/></div>
+    <div className="page-hero-bg" aria-hidden="true"><Picture image={image || IMAGES.hero} alt="" sizes="100vw" priority/></div>
     <div className="container page-hero-inner">
+      {crumbs && <Breadcrumbs trail={crumbs}/>}
       <Eyebrow light>{eyebrow}</Eyebrow>
       <h1>{title}</h1>
       {lead && <p>{lead}</p>}
@@ -48,12 +64,12 @@ function Lightbox({ index, onClose, onStep }) {
   const [zoomed, setZoomed] = useState(false)
   const [origin, setOrigin] = useState('50% 50%')
   const closeRef = useRef(null)
-  const item = GALLERY[index]
+  const image = GALLERY[index]
   const captions = t('gallery.captions')
 
   useEffect(() => { setZoomed(false) }, [index])
   useEffect(() => {
-    const previous = document.activeElement
+    const previous = /** @type {HTMLElement | null} */ (document.activeElement)
     closeRef.current?.focus()
     document.body.classList.add('nav-open')
     const onKey = (e) => {
@@ -76,7 +92,7 @@ function Lightbox({ index, onClose, onStep }) {
     <button type="button" className="lb-btn lb-prev" onClick={() => onStep(-1)} aria-label={t('gallery.prev')}><Icon name="left"/></button>
     <figure className="lb-figure">
       <button type="button" className={`lb-zoom ${zoomed ? 'is-zoomed' : ''}`} onClick={toggleZoom} aria-label={t('gallery.zoom')}>
-        <img key={item.src} src={item.src} width={item.w} height={item.h} alt={`${t('gallery.alt')} — ${captions[index]}`} style={{ transformOrigin: origin }}/>
+        <Picture key={image} image={image} alt={`${t('gallery.alt')} — ${captions[index]}`} sizes="(max-width: 900px) 100vw, 70vw" loading="eager" style={{ transformOrigin: origin }}/>
       </button>
       <figcaption><span>{String(index + 1).padStart(2, '0')} / {String(GALLERY.length).padStart(2, '0')}</span>{captions[index]}</figcaption>
     </figure>
@@ -99,11 +115,12 @@ export function ClinicGallery() {
     </div>
     <div className="gallery-rail" aria-label={t('gallery.hint')}>
       <div className="gallery-track">
-        {loop.map((item, i) => {
+        {loop.map((image, i) => {
           const real = i % GALLERY.length
           const duplicate = i >= GALLERY.length
-          return <button type="button" key={`${item.src}-${i}`} className="gallery-item" style={{ '--ar': `${item.w} / ${item.h}` }} onClick={() => setActive(real)} aria-hidden={duplicate || undefined} tabIndex={duplicate ? -1 : 0} aria-label={`${captions[real]} — ${t('gallery.hint')}`}>
-            <img src={item.src} alt="" width={item.w} height={item.h} loading="lazy"/>
+          const { w, h } = imageMeta(image)
+          return <button type="button" key={`${image}-${i}`} className="gallery-item" style={{ '--ar': `${w} / ${h}` }} onClick={() => setActive(real)} aria-hidden={duplicate || undefined} tabIndex={duplicate ? -1 : 0} aria-label={`${captions[real]} — ${t('gallery.hint')}`}>
+            <Picture image={image} alt="" sizes="(max-width: 700px) 70vw, 360px"/>
             <span className="gallery-caption"><Icon name="zoom"/>{captions[real]}</span>
           </button>
         })}
@@ -114,6 +131,7 @@ export function ClinicGallery() {
   </section>
 }
 
+/** @param {{ headingLevel?: 'h2' | 'h3' }} props */
 export function ProgramStack({ headingLevel = 'h3' }) {
   const { t } = useI18n()
   const Heading = headingLevel
@@ -121,13 +139,16 @@ export function ProgramStack({ headingLevel = 'h3' }) {
     {PROGRAMS.map((p, i) => {
       const item = t(`programs.items.${p.key}`)
       return <article key={p.key} className="stack-card" style={{ '--i': i }}>
-        <div className="stack-media"><img src={p.image} alt="" loading="lazy" width="1200" height="896"/><span className="stack-num">0{i + 1}</span></div>
+        <div className="stack-media"><Picture image={p.image} alt="" sizes="(max-width: 900px) 92vw, 560px"/><span className="stack-num">0{i + 1}</span></div>
         <div className="stack-body">
           <span className="tag">{item.tag}</span>
           <Heading>{item.title}</Heading>
           <p>{item.text}</p>
           <ul>{item.points.map((pt) => <li key={pt}><Icon name="check"/>{pt}</li>)}</ul>
-          <Button to="/book-consultation/" variant="outline">{t('programs.enquire')}</Button>
+          <div className="btn-row">
+            <Button to="/book-consultation/" variant="outline">{t('programs.enquire')}</Button>
+            <Link className="text-link" to={`/services/${p.service}/`}>{t('programs.related')}: {t(`services.items.${p.service}.title`)}<Icon name="arrow"/></Link>
+          </div>
         </div>
       </article>
     })}
@@ -139,7 +160,7 @@ export function ContactCTA() {
   const ref = useRef(null)
   useScrollProgress(ref)
   return <section ref={ref} className="cta" aria-labelledby="cta-title">
-    <div className="cta-bg" aria-hidden="true"><img src={IMAGES.cta} alt="" loading="lazy"/></div>
+    <div className="cta-bg" aria-hidden="true"><Picture image={IMAGES.cta} alt="" sizes="100vw"/></div>
     <div className="container cta-inner">
       <Reveal variant="clip" className="cta-copy">
         <Eyebrow light>{t('cta.eyebrow')}</Eyebrow>
@@ -160,7 +181,7 @@ export function ArticleCard({ post, delay = 0 }) {
   const copy = t(`journal.posts.${post.slug}`)
   return <Reveal variant="up" delay={delay} className="article-reveal">
     <Link className="article-card tilt" to={`/articles/${post.slug}/`} {...tilt}>
-      <div className="article-media"><img src={post.image} alt="" loading="lazy" width="720" height="480"/></div>
+      <div className="article-media"><Picture image={post.image} alt="" sizes="(max-width: 700px) 92vw, (max-width: 1100px) 46vw, 380px"/></div>
       <div className="article-body">
         <span className="tag">{copy.category}</span>
         <h3>{copy.title}</h3>

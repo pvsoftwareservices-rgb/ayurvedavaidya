@@ -2,8 +2,6 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { useLocation } from 'react-router-dom'
 import { getRouteMeta } from '../seo'
 import en from './en'
-import es from './es'
-import ru from './ru'
 
 export const LANGUAGES = [
   { code: 'en', label: 'English', short: 'EN' },
@@ -11,14 +9,16 @@ export const LANGUAGES = [
   { code: 'ru', label: 'Русский', short: 'RU' },
 ]
 
-const DICTIONARIES = { en, es, ru }
+// English ships with the page; Spanish and Russian are separate chunks loaded only when chosen.
+const LOADERS = { es: () => import('./es'), ru: () => import('./ru') }
+const CODES = LANGUAGES.map((l) => l.code)
 const STORAGE_KEY = 'av-language'
 const DEFAULT_LANGUAGE = 'en'
 
 function readStoredLanguage() {
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY)
-    return stored && DICTIONARIES[stored] ? stored : DEFAULT_LANGUAGE
+    return stored && CODES.includes(stored) ? stored : DEFAULT_LANGUAGE
   } catch {
     return DEFAULT_LANGUAGE
   }
@@ -30,23 +30,44 @@ function lookup(dictionary, path) {
 
 const I18nContext = createContext(null)
 
+/** @param {{ children: import('react').ReactNode }} props */
 export function LanguageProvider({ children }) {
-  const [lang, setLangState] = useState(readStoredLanguage)
+  // Pages are pre-rendered in English, so the first client render must be English too (hydration match);
+  // a remembered language is applied right after hydration, once its dictionary has loaded.
+  const [lang, setLangState] = useState(DEFAULT_LANGUAGE)
+  const [dictionaries, setDictionaries] = useState(/** @type {Record<string, any>} */ ({ en }))
+
+  const activate = useCallback(async (code) => {
+    if (code !== DEFAULT_LANGUAGE && LOADERS[code]) {
+      try {
+        const dictionary = (await LOADERS[code]()).default
+        setDictionaries((loaded) => ({ ...loaded, [code]: dictionary }))
+      } catch {
+        return // chunk failed to load (offline): stay in the current language
+      }
+    }
+    setLangState(code)
+  }, [])
+
+  useEffect(() => {
+    const stored = readStoredLanguage()
+    if (stored !== DEFAULT_LANGUAGE) activate(stored)
+  }, [activate])
 
   const setLang = useCallback((code) => {
-    if (!DICTIONARIES[code]) return
-    setLangState(code)
+    if (!CODES.includes(code)) return
+    activate(code)
     try { window.localStorage.setItem(STORAGE_KEY, code) } catch { /* storage unavailable: keep in memory only */ }
-  }, [])
+  }, [activate])
 
   useEffect(() => { document.documentElement.lang = lang }, [lang])
 
   const value = useMemo(() => {
-    const dictionary = DICTIONARIES[lang]
+    const dictionary = dictionaries[lang] ?? en
     /** Returns the translated value (string, array or object) with an English fallback. */
     const t = (path) => lookup(dictionary, path) ?? lookup(en, path) ?? path
     return { lang, setLang, t }
-  }, [lang, setLang])
+  }, [lang, setLang, dictionaries])
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>
 }

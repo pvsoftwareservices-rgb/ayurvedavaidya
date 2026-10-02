@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { getRouteMeta, headTags, jsonLdFor, NOT_FOUND_META } from '../seo'
+import { getRouteMeta, headTags, jsonLdFor, NOT_FOUND_META, serializeJsonLd } from '../seo'
 
 function syncTag([attr, key, value]) {
   const selector = attr === 'rel' ? `link[rel="${key}"]` : `meta[${attr}="${key}"]`
@@ -19,11 +19,11 @@ function syncJsonLd(data) {
   if (!data) { el?.remove(); return }
   if (!el) {
     el = document.createElement('script')
-    el.type = 'application/ld+json'
+    el.setAttribute('type', 'application/ld+json')
     el.id = 'ld-json'
     document.head.appendChild(el)
   }
-  el.textContent = JSON.stringify(data)
+  el.textContent = serializeJsonLd(data)
 }
 
 /** Keeps description, robots, canonical, social and JSON-LD tags in step with client-side navigation. */

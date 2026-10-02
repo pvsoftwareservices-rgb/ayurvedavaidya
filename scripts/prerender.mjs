@@ -1,21 +1,23 @@
-// Post-build step (runs after `vite build` as part of `npm run build`).
-// The app is a client-rendered SPA on static hosting. Hostinger publishes `dist/` into public_html and
-// regenerates public_html/.htaccess on each deploy, so the site must not depend on rewrite rules:
-// every public route is written as a real folder (`dist/about/index.html` → /about/) carrying that
-// route's own title, description, robots, canonical, social and JSON-LD tags. Also generates redirect
-// pages for duplicate routes, 404.html, sitemap.xml, robots.txt and an optional .htaccess that adds
-// www/HTTPS redirects and the branded 404 page when the host keeps it.
-import { access, mkdir, readFile, writeFile } from 'node:fs/promises'
+// Post-build step (runs after the client and SSR Vite builds as part of `npm run build`).
+// Hostinger serves dist/ as static files from public_html (LiteSpeed, .htaccess honoured). Every public route
+// is written as a real folder (dist/about/index.html → /about/) containing the fully rendered page — so content,
+// images and the enquiry form work before (and without) JavaScript — plus that route's title, description,
+// robots, canonical, social tags, JSON-LD and preload hints. Also writes redirect pages, 404.html,
+// sitemap.xml + sitemap-index.xml, robots.txt and the Apache/LiteSpeed config (.htaccess files).
+import { access, mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { CONTACT } from '../src/data.js'
-import en from '../src/i18n/en.js'
-import { NOT_FOUND_META, REDIRECTS, ROUTES, SITE_URL, headFor, headTags, jsonLdFor, pagePath, pageUrl } from '../src/seo.js'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const DIST = fileURLToPath(new URL('../dist/', import.meta.url))
+const SSR_ENTRY = fileURLToPath(new URL('../dist-ssr/entry-server.js', import.meta.url))
 const SEO_BLOCK = /<!-- seo:start[\s\S]*?<!-- seo:end -->/
-const NOSCRIPT_MARK = '<!-- seo:noscript -->'
-const NAV = [['Home', '/'], [en.nav.about, '/about'], [en.nav.services, '/services'], [en.nav.programs, '/programs'], [en.nav.journal, '/articles'], [en.nav.book, '/book-consultation']]
+const FONT_MARK = '<!-- preload:fonts -->'
+const APP_MARK = '<!--app-html-->'
+// Latin subsets of the two fonts used above the fold (body text and the 600-weight display headings).
+const CRITICAL_FONTS = [/^manrope-latin-wght-normal-.*\.woff2$/, /^cormorant-garamond-latin-600-normal-.*\.woff2$/]
+
+const ssr = await import(pathToFileURL(SSR_ENTRY).href)
+const { NOT_FOUND_META, REDIRECTS, ROUTES, SITE_UPDATED, SITE_URL, DIAL_CODES, headFor, headTags, heroPreload, jsonLdFor, pagePath, pageUrl, render, serializeJsonLd } = ssr
 
 const escapeHtml = (value) => String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 const routeFile = (path) => (path === '/' ? 'index.html' : `${path.slice(1)}/index.html`)
@@ -28,27 +30,21 @@ function renderHead(route) {
       ? `<link rel="${key}" href="${escapeHtml(value)}" />`
       : `<meta ${attr}="${key}" content="${escapeHtml(value)}" />`)
   const lines = [`<title>${escapeHtml(head.title)}</title>`, ...tags]
-  if (route.hero) lines.push(`<link rel="preload" as="image" href="${escapeHtml(route.hero)}" fetchpriority="high" />`)
+  const hero = heroPreload(route)
+  if (hero) lines.push(`<link rel="preload" as="image" type="${hero.type}" href="${hero.href}" imagesrcset="${escapeHtml(hero.srcset)}" imagesizes="${escapeHtml(hero.sizes)}" fetchpriority="high" />`)
   const ld = jsonLdFor(route)
-  if (ld) lines.push(`<script type="application/ld+json" id="ld-json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>`)
+  if (ld) lines.push(`<script type="application/ld+json" id="ld-json">${serializeJsonLd(ld)}</script>`)
   return lines.join('\n    ')
 }
 
-/** Plain fallback for visitors and crawlers without JavaScript; hidden whenever the app runs. */
-function renderNoscript(route) {
-  const head = headFor(route)
-  const links = NAV.map(([label, path]) => `<a href="${pagePath(path)}">${escapeHtml(label)}</a>`).join(' · ')
-  return `<noscript><div style="max-width:720px;margin:40px auto;padding:0 16px;font-family:sans-serif;line-height:1.6">`
-    + `<p><strong>${escapeHtml(head.title)}</strong></p><p>${escapeHtml(head.description)}</p><p>${links}</p>`
-    + `<p><a href="${CONTACT.phoneHref}">${CONTACT.phone}</a> · <a href="${CONTACT.emailHref}">${CONTACT.email}</a></p></div></noscript>`
+async function renderPage(template, route, url) {
+  if (!SEO_BLOCK.test(template) || !template.includes(APP_MARK)) throw new Error('dist/index.html is missing the seo:start/seo:end or app-html markers')
+  const html = render(url)
+  if (!html.includes('id="main-content"')) throw new Error(`Pre-render of ${url} produced no <main id="main-content">`)
+  return template.replace(SEO_BLOCK, () => renderHead(route)).replace(APP_MARK, () => html)
 }
 
-function renderPage(template, route) {
-  if (!SEO_BLOCK.test(template) || !template.includes(NOSCRIPT_MARK)) throw new Error('dist/index.html is missing the seo:start/seo:end or seo:noscript markers')
-  return template.replace(SEO_BLOCK, renderHead(route)).replace(NOSCRIPT_MARK, renderNoscript(route))
-}
-
-/** Instant meta refresh: treated by Google as a permanent redirect when the server-side 301 is unavailable. */
+/** Instant meta refresh: a fallback for the server-side 301 in .htaccess. */
 function renderRedirect(to) {
   const target = pagePath(to)
   return `<!doctype html>
@@ -56,6 +52,7 @@ function renderRedirect(to) {
   <head>
     <meta charset="UTF-8" />
     <title>Redirecting…</title>
+    <meta name="robots" content="noindex, follow" />
     <link rel="canonical" href="${pageUrl(to)}" />
     <meta http-equiv="refresh" content="0; url=${target}" />
     <script>location.replace(${JSON.stringify(target)} + location.search + location.hash)</script>
@@ -65,18 +62,29 @@ function renderRedirect(to) {
 `
 }
 
+const indexable = () => ROUTES.filter((r) => !r.noindex)
+
 function renderSitemap() {
-  const urls = ROUTES.filter((r) => !r.noindex).map((r) => `  <url><loc>${pageUrl(r.path)}</loc></url>`)
+  const urls = indexable().map((r) => `  <url><loc>${pageUrl(r.path)}</loc><lastmod>${r.updated ?? SITE_UPDATED}</lastmod></url>`)
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`
 }
 
-const renderRobots = () => `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`
+const renderSitemapIndex = () => `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap><loc>${SITE_URL}/sitemap.xml</loc><lastmod>${SITE_UPDATED}</lastmod></sitemap>
+</sitemapindex>
+`
+
+// Allow everything: noindex pages must stay crawlable so Google can see their noindex tag, and CSS/JS must
+// stay crawlable so Google can render pages.
+const renderRobots = () => `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap-index.xml\n`
 
 function renderHtaccess() {
   const host = new URL(SITE_URL).host
   const redirects = Object.entries(REDIRECTS).map(([from, to]) => `RewriteRule ^${from.slice(1)}/?$ ${pageUrl(to)} [R=301,L]`)
-  return `# Generated by scripts/prerender.mjs. Optional: every page is a real folder, so the site also works
-# if the host replaces this file. When kept, it adds single-hop 301s and the branded 404 page.
+  return `# Generated by scripts/prerender.mjs — do not edit dist/.htaccess by hand.
+# Every page is a real folder, so the site still works if the host replaces this file; when kept it adds
+# single-hop 301s, the branded 404 page (with a real 404 status), security headers and caching.
 Options -MultiViews -Indexes
 DirectoryIndex index.html
 ErrorDocument 404 /404.html
@@ -105,8 +113,44 @@ ${redirects.join('\n')}
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^(.*[^/])$ ${SITE_URL}/$1/ [R=301,L]
 </IfModule>
+
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+# Browsers ignore HSTS on plain-HTTP responses, so this only takes effect after the HTTPS redirect.
+Header always set Strict-Transport-Security "max-age=31536000"
+# Pages, sitemaps and the manifest are revalidated on every visit so a new deploy shows at once.
+<FilesMatch "\\.(html|xml|txt|webmanifest)$">
+Header set Cache-Control "no-cache"
+</FilesMatch>
+# Icons keep stable names: cache for a week.
+<FilesMatch "^(favicon\\.(ico|svg)|favicon-.*\\.png|apple-touch-icon\\.png|web-app-manifest-.*\\.png)$">
+Header set Cache-Control "public, max-age=604800"
+</FilesMatch>
+</IfModule>
+
+<IfModule mod_mime.c>
+AddType application/manifest+json .webmanifest
+AddType image/avif .avif
+AddType image/webp .webp
+</IfModule>
 `
 }
+
+// Vite's hashed bundles (JS, CSS, fonts) never change content under the same name: cache for a year.
+const ASSETS_HTACCESS = `# Generated by scripts/prerender.mjs: file names contain a content hash.
+<IfModule mod_headers.c>
+Header set Cache-Control "public, max-age=31536000, immutable"
+</IfModule>
+`
+// Generated images keep their names between builds when unchanged; a month is a safe balance.
+const IMAGES_HTACCESS = `# Generated by scripts/prerender.mjs
+<IfModule mod_headers.c>
+Header set Cache-Control "public, max-age=2592000"
+</IfModule>
+`
 
 async function write(file, content) {
   const target = join(DIST, file)
@@ -114,15 +158,32 @@ async function write(file, content) {
   await writeFile(target, content)
 }
 
-const template = await readFile(join(DIST, 'index.html'), 'utf8')
-for (const route of ROUTES) await write(routeFile(route.path), renderPage(template, route))
+async function fontPreloads() {
+  const files = await readdir(join(DIST, 'assets'))
+  return CRITICAL_FONTS.map((pattern) => {
+    const file = files.find((f) => pattern.test(f))
+    if (!file) throw new Error(`Critical font ${pattern} not found in dist/assets`)
+    return `<link rel="preload" as="font" type="font/woff2" href="/assets/${file}" crossorigin />`
+  }).join('\n    ')
+}
+
+const shell = await readFile(join(DIST, 'index.html'), 'utf8')
+if (!shell.includes(FONT_MARK)) throw new Error('dist/index.html is missing the preload:fonts marker')
+const template = shell.replace(FONT_MARK, await fontPreloads())
+for (const route of ROUTES) await write(routeFile(route.path), await renderPage(template, route, pagePath(route.path)))
 for (const [from, to] of Object.entries(REDIRECTS)) await write(routeFile(from), renderRedirect(to))
-await write('404.html', renderPage(template, NOT_FOUND_META))
+await write('404.html', await renderPage(template, NOT_FOUND_META, '/404-not-found/'))
 await write('sitemap.xml', renderSitemap())
+await write('sitemap-index.xml', renderSitemapIndex())
 await write('robots.txt', renderRobots())
 await write('.htaccess', renderHtaccess())
+await write('assets/.htaccess', ASSETS_HTACCESS)
+await write('images/.htaccess', IMAGES_HTACCESS)
+// Dialling codes for the PHP handler's server-side phone validation (no-JS posts send only the country).
+await write('api/lib/dial-codes.json', JSON.stringify(DIAL_CODES))
+await rm(fileURLToPath(new URL('../dist-ssr/', import.meta.url)), { recursive: true, force: true })
 
 // Fail the build (and therefore the deploy) if any expected output is missing.
-const expected = [...ROUTES.map((r) => routeFile(r.path)), ...Object.keys(REDIRECTS).map(routeFile), '404.html', 'sitemap.xml', 'robots.txt', '.htaccess']
+const expected = [...ROUTES.map((r) => routeFile(r.path)), ...Object.keys(REDIRECTS).map(routeFile), '404.html', 'sitemap.xml', 'sitemap-index.xml', 'robots.txt', '.htaccess', 'api/contact.php', 'api/lib/dial-codes.json', 'favicon.ico', 'site.webmanifest']
 await Promise.all(expected.map((file) => access(join(DIST, file))))
-console.log(`prerender: ${ROUTES.length} pages, ${Object.keys(REDIRECTS).length} redirects, 404.html, sitemap.xml (${ROUTES.filter((r) => !r.noindex).length} URLs), robots.txt, .htaccess`)
+console.log(`prerender: ${ROUTES.length} pages (${indexable().length} indexable), ${Object.keys(REDIRECTS).length} redirects, 404.html, sitemaps, robots.txt, .htaccess`)

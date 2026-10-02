@@ -1,4 +1,5 @@
-import { ClinicGallery, ContactCTA, QualificationGrid, Timeline } from '../components/Blocks'
+import { Breadcrumbs, ClinicGallery, ContactCTA, QualificationGrid, Timeline } from '../components/Blocks'
+import Picture from '../components/Picture'
 import { CONTACT, DOCTOR_IMAGES, QUALIFICATIONS } from '../data'
 import { useI18n, usePageTitle } from '../i18n'
 import { Reveal, tilt } from '../motion'
@@ -12,6 +13,7 @@ export default function AboutPage() {
     <section className="profile-hero">
       <div className="container profile-grid">
         <div className="profile-copy">
+          <Breadcrumbs trail={[[t('nav.about'), '/about/']]}/>
           <Eyebrow light>{t('about.eyebrow')}</Eyebrow>
           <h1>{t('doctor.name')}</h1>
           <p className="profile-headline">{t('doctor.headline')}</p>
@@ -24,7 +26,7 @@ export default function AboutPage() {
         </div>
         <div className="profile-photo">
           <div className="arch-ring" aria-hidden="true"/>
-          <figure className="arch"><img src={DOCTOR_IMAGES.alt} width="1035" height="1196" alt={t('doctor.portraitAlt')}/></figure>
+          <figure className="arch"><Picture image={DOCTOR_IMAGES.profile} alt={t('doctor.profileAlt')} sizes="(max-width: 900px) 80vw, 460px" priority/></figure>
         </div>
       </div>
     </section>

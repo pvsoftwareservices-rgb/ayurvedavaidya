@@ -1,6 +1,7 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "ayurvedavaidya-dev", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev", "--", "--port", "5173", "--strictPort"], "port": 5173 }
+    { "name": "ayurvedavaidya-dev", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev", "--", "--port", "5173", "--strictPort"], "port": 5173 },
+    { "name": "ayurvedavaidya-preview", "runtimeExecutable": "node", "runtimeArgs": ["scripts/serve.mjs"], "port": 4173 }
   ]
 }

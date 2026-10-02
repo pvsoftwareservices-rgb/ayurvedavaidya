@@ -11,7 +11,7 @@
   --green-500: #2f7a3e;
   --leaf: #6f9a36;
   --gold-800: #7a5c19;
-  --gold-700: #8f6d22;
+  --gold-700: #765817; /* darkened from #8f6d22: 5:1+ contrast on paper/ivory (WCAG AA) */
   --gold-600: #a8842c;
   --gold-500: #c29d42;
   --gold-300: #e2c77e;
@@ -25,7 +25,7 @@
   --line-dark: rgba(226, 199, 126, 0.24);
 
   --display: 'Cormorant Garamond', 'Cormorant', Georgia, 'Times New Roman', serif;
-  --body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --body: 'Manrope Variable', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --container: min(100% - 48px, 1280px);
   --header-h: 84px;
@@ -49,6 +49,10 @@ body {
 }
 body.nav-open { overflow: hidden; }
 img, svg { display: block; max-width: 100%; }
+/* <Picture> wrappers generate no box, so layout and CSS written for the <img> are unchanged. */
+picture { display: contents; }
+/* Slide-in reveals start translated sideways; clip so they never cause a horizontal scrollbar (clip keeps position: sticky working). */
+main { overflow-x: clip; }
 img { height: auto; }
 a { color: inherit; text-decoration: none; }
 button, input, select, textarea { font: inherit; color: inherit; }
@@ -185,3 +189,18 @@ ul, ol { margin: 0; }
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
   .reveal { opacity: 1 !important; transform: none !important; clip-path: none !important; }
 }
+
+/* Text links with an arrow (cross-links between pages). Min 24px tall for touch. */
+.text-link { display: inline-flex; align-items: center; gap: 8px; min-height: 24px; font-weight: 700; color: var(--green-600); text-decoration: underline; text-decoration-color: var(--gold-500); text-underline-offset: 4px; transition: gap 0.3s var(--ease), color 0.3s; }
+.text-link .icon { width: 16px; height: 16px; flex: none; }
+.text-link:hover { gap: 12px; color: var(--green-800); }
+
+/* Breadcrumbs (inner-page heroes). */
+.breadcrumbs { margin-bottom: 22px; font-size: 13.5px; animation: fade-up 1s var(--ease) both; }
+.breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 0; padding: 0; list-style: none; }
+.breadcrumbs li { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; }
+.breadcrumbs li + li::before { content: '/'; opacity: 0.6; }
+.breadcrumbs a { display: inline-block; padding: 4px 0; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(226, 199, 126, 0.5); }
+.breadcrumbs [aria-current] { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 40ch; }
+.breadcrumbs.is-light { color: rgba(250, 245, 232, 0.86); }
+.breadcrumbs.is-light a:hover { color: var(--gold-300); }

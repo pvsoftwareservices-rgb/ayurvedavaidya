@@ -20,7 +20,7 @@ export default function LegalPage({ type }) {
   const page = t(`legal.pages.${type}`)
   usePageTitle(title)
   return <main id="main-content">
-    <PageHero eyebrow={t('legal.eyebrow')} title={title} lead={page.lead}/>
+    <PageHero eyebrow={t('legal.eyebrow')} title={title} lead={page.lead} crumbs={[[title, `/${type}/`]]}/>
     <section className="section legal-page">
       <div className="container legal-body">
         <p className="legal-updated">{t('legal.updatedLabel')}: {t('legal.updated')}</p>

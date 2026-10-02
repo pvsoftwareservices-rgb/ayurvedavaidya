@@ -4,6 +4,7 @@ import { ArticleCard, ClinicGallery, ContactCTA, ProgramStack, QualificationGrid
 import { CLIENT_AVATARS, CLIENT_WALL, CONTACT, DOCTOR_IMAGES, IMAGES, POSTS, PROCESS_IMAGES, QUALIFICATIONS, SERVICES } from './data'
 import { useI18n, usePageTitle } from './i18n'
 import { Reveal, prefersReducedMotion, useScrollProgress } from './motion'
+import Picture, { imageMeta } from './components/Picture'
 import { Button, Eyebrow, Icon, SectionHead } from './ui'
 
 /** One column of the hero photo wall. The set is rendered twice so the CSS drift loops seamlessly. */
@@ -13,8 +14,9 @@ function WallColumn({ photos, index }) {
   return <div className={`wall-col wall-col-${index}`}>
     <div className="wall-track">
       {[0, 1].map((copy) => <ul key={copy} className="wall-set" aria-hidden={copy === 1 || undefined}>
-        {photos.map((photo, i) => <li key={photo.src} className="wall-tile" style={{ aspectRatio: `${photo.w} / ${photo.h}` }}>
-          <img src={photo.src} width={photo.w} height={photo.h} alt={copy === 1 ? '' : alts[photo.kind]} decoding="async" fetchPriority={i < 2 && copy === 0 ? 'high' : 'low'}/>
+        {photos.map((photo, i) => <li key={photo.image} className="wall-tile" style={{ aspectRatio: `${imageMeta(photo.image).w} / ${imageMeta(photo.image).h}` }}>
+          {/* The first copy is above the fold: load it straight away (first tile of each column at high priority); the looping duplicate waits. */}
+          <Picture image={photo.image} alt={copy === 1 ? '' : alts[photo.kind]} sizes="(max-width: 760px) 34vw, 260px" loading={copy === 0 ? 'eager' : 'lazy'} fetchPriority={copy === 0 && i === 0 ? 'high' : undefined}/>
         </li>)}
       </ul>)}
     </div>
@@ -29,7 +31,7 @@ function Hero() {
     <div className="hero-bg" aria-hidden="true"/>
     <div className="hero-wall" role="region" aria-label={t('hero.wallLabel')}>
       <div className="wall-grid">
-        {CLIENT_WALL.map((photos, i) => <WallColumn key={photos[0].src} photos={photos} index={i}/>)}
+        {CLIENT_WALL.map((photos, i) => <WallColumn key={photos[0].image} photos={photos} index={i}/>)}
       </div>
     </div>
     <div className="hero-namecard"><strong>{t('doctor.name')}</strong><span>{t('doctor.role')}</span></div>
@@ -46,7 +48,7 @@ function Hero() {
           <Button href={CONTACT.phoneHref} variant="glass" icon="phone">{CONTACT.phone}</Button>
         </div>
         <div className="hero-trust">
-          <span className="trust-faces" aria-hidden="true">{CLIENT_AVATARS.map((src) => <img key={src} src={src} alt="" width="48" height="48"/>)}</span>
+          <span className="trust-faces" aria-hidden="true">{CLIENT_AVATARS.map((image) => <Picture key={image} image={image} alt="" sizes="48px" loading="eager"/>)}</span>
           <span className="trust-copy"><strong>{t('hero.trust')}</strong><small>{t('hero.trustSub')}</small></span>
         </div>
       </div>
@@ -75,7 +77,7 @@ function MeetDoctor() {
     <div className="container doctor-grid">
       <div className="doctor-media">
         <Reveal variant="clip" className="doctor-photo">
-          <img src={DOCTOR_IMAGES.desk} width="1035" height="1280" alt={t('doctor.portraitAlt')} loading="lazy"/>
+          <Picture image={DOCTOR_IMAGES.desk} alt={t('doctor.portraitAlt')} sizes="(max-width: 900px) 92vw, 520px"/>
         </Reveal>
         <div className="doctor-badge"><Icon name="shield"/><span><strong>{t('intro.badge')}</strong>Ayurveda Clinic</span></div>
       </div>
@@ -106,7 +108,7 @@ function ServicePanels() {
           const item = t(`services.items.${s.key}`)
           return <Reveal key={s.key} variant="up" delay={i * 90} className={`panel-wrap ${active === i ? 'is-active' : ''}`}>
             <Link className="panel" to={`/services/${s.key}/`} onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)}>
-              <img src={s.image} alt="" loading="lazy" width="1200" height="896"/>
+              <Picture image={s.image} alt="" sizes="(max-width: 700px) 92vw, (max-width: 1100px) 46vw, 520px"/>
               <span className="panel-shade" aria-hidden="true"/>
               <span className="panel-num">0{i + 1}</span>
               <span className="panel-vertical" aria-hidden="true">{item.title}</span>
@@ -143,13 +145,13 @@ function ConsultationProcess() {
             {steps.map((s, i) => <li key={s.title} className={i === step ? 'is-active' : i < step ? 'is-done' : ''} aria-current={i === step ? 'step' : undefined}>
               <span className="step-num">0{i + 1}</span>
               <div><h3>{s.title}</h3><p>{s.text}</p></div>
-              <img className="step-thumb" src={PROCESS_IMAGES[i]} alt="" loading="lazy"/>
+              <Picture image={PROCESS_IMAGES[i]} className="step-thumb" alt="" sizes="120px"/>
             </li>)}
           </ol>
           <div className="process-bar" aria-hidden="true"><span/></div>
         </div>
         <div className="process-visual" aria-hidden="true">
-          {PROCESS_IMAGES.map((src, i) => <img key={src} src={src} alt="" loading="lazy" className={i === step ? 'is-active' : i < step ? 'is-past' : ''}/>)}
+          {PROCESS_IMAGES.map((image, i) => <Picture key={image} image={image} alt="" sizes="(max-width: 900px) 92vw, 560px" className={i === step ? 'is-active' : i < step ? 'is-past' : ''}/>)}
           <span className="process-count">{t('common.step')} 0{step + 1} <small>/ 0{steps.length}</small></span>
         </div>
       </div>
@@ -178,7 +180,7 @@ function OnlineConsult() {
   useScrollProgress(ref)
   return <section ref={ref} className="online" aria-labelledby="online-title">
     <div className="container online-grid">
-      <div className="online-media"><img src={IMAGES.online} alt="" loading="lazy" width="1200" height="896"/><span className="online-live"><Icon name="video"/>{t('online.eyebrow')}</span></div>
+      <div className="online-media"><Picture image={IMAGES.online} alt="" sizes="(max-width: 900px) 92vw, 600px"/><span className="online-live"><Icon name="video"/>{t('online.eyebrow')}</span></div>
       <Reveal variant="right" className="online-copy">
         <Eyebrow>{t('online.eyebrow')}</Eyebrow>
         <h2 id="online-title">{t('online.title')}</h2>

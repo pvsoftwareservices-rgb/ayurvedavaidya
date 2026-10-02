@@ -1,0 +1,374 @@
+{
+  "brand/ayurvedavaidya-logo": {
+    "w": 415,
+    "h": 305,
+    "widths": [
+      160,
+      320,
+      415
+    ]
+  },
+  "community/client-01": {
+    "w": 820,
+    "h": 541,
+    "widths": [
+      160,
+      320,
+      480
+    ]
+  },
+  "community/client-02": {
+    "w": 820,
+    "h": 737,
+    "widths": [
+      160,
+      320,
+      480
+    ]
+  },
+  "community/client-03": {
+    "w": 607,
+    "h": 820,
+    "widths": [
+      160,
+      320,
+      480
+    ]
+  },
+  "community/client-04": {
+    "w": 439,
+    "h": 820,
+    "widths": [
+      160,
+      320,
+      439
+    ]
+  },
+  "community/client-05": {
+    "w": 820,
+    "h": 486,
+    "widths": [
+      160,
+      320,
+      480
+    ]
+  },
+  "community/client-06": {
+    "w": 820,
+    "h": 608,
+    "widths": [
+      160,
+      320,
+      480
+    ]
+  },
+  "community/client-07": {
+    "w": 820,
+    "h": 608,
+    "widths": [
+      160,
+      320,
+      480
+    ]
+  },
+  "community/client-08": {
+    "w": 820,
+    "h": 820,
+    "widths": [
+      160,
+      320,
+      480
+    ]
+  },
+  "community/client-09": {
+    "w": 592,
+    "h": 820,
+    "widths": [
+      160,
+      320,
+      480
+    ]
+  },
+  "community/client-10": {
+    "w": 820,
+    "h": 379,
+    "widths": [
+      160,
+      320,
+      480
+    ]
+  },
+  "community/client-11": {
+    "w": 820,
+    "h": 546,
+    "widths": [
+      160,
+      320,
+      480
+    ]
+  },
+  "community/client-12": {
+    "w": 615,
+    "h": 820,
+    "widths": [
+      160,
+      320,
+      480
+    ]
+  },
+  "community/client-13": {
+    "w": 820,
+    "h": 615,
+    "widths": [
+      160,
+      320,
+      480
+    ]
+  },
+  "community/client-14": {
+    "w": 820,
+    "h": 615,
+    "widths": [
+      160,
+      320,
+      480
+    ]
+  },
+  "community/client-15": {
+    "w": 800,
+    "h": 820,
+    "widths": [
+      160,
+      320,
+      480
+    ]
+  },
+  "community/client-16": {
+    "w": 820,
+    "h": 615,
+    "widths": [
+      160,
+      320,
+      480
+    ]
+  },
+  "clinic/clinic-visit-01": {
+    "w": 1100,
+    "h": 828,
+    "widths": [
+      400,
+      800,
+      1100
+    ]
+  },
+  "clinic/clinic-visit-02": {
+    "w": 569,
+    "h": 1209,
+    "widths": [
+      400,
+      569
+    ]
+  },
+  "clinic/clinic-visit-03": {
+    "w": 826,
+    "h": 1280,
+    "widths": [
+      400,
+      800,
+      826
+    ]
+  },
+  "clinic/clinic-visit-04": {
+    "w": 960,
+    "h": 1280,
+    "widths": [
+      400,
+      800,
+      960
+    ]
+  },
+  "clinic/clinic-visit-05": {
+    "w": 960,
+    "h": 1280,
+    "widths": [
+      400,
+      800,
+      960
+    ]
+  },
+  "people/dr-tejendra-singh-desk": {
+    "w": 1035,
+    "h": 1280,
+    "widths": [
+      400,
+      800,
+      1035
+    ]
+  },
+  "people/dr-tejendra-singh-portrait": {
+    "w": 760,
+    "h": 878,
+    "widths": [
+      400,
+      760
+    ],
+    "og": "/images/og/dr-tejendra-singh-portrait.jpg"
+  },
+  "people/dr-tejendra-singh-profile": {
+    "w": 1035,
+    "h": 1196,
+    "widths": [
+      400,
+      800,
+      1035
+    ],
+    "og": "/images/og/dr-tejendra-singh-profile.jpg"
+  },
+  "illustrations/cta-botanical": {
+    "w": 1584,
+    "h": 672,
+    "widths": [
+      480,
+      800,
+      1200,
+      1584
+    ]
+  },
+  "illustrations/hero-clinic": {
+    "w": 1376,
+    "h": 768,
+    "widths": [
+      480,
+      800,
+      1200,
+      1376
+    ],
+    "og": "/images/og/hero-clinic.jpg"
+  },
+  "illustrations/service-ayurvedic-diet": {
+    "w": 1200,
+    "h": 896,
+    "widths": [
+      480,
+      800,
+      1200
+    ],
+    "og": "/images/og/service-ayurvedic-diet.jpg"
+  },
+  "illustrations/service-counselling": {
+    "w": 1200,
+    "h": 896,
+    "widths": [
+      480,
+      800,
+      1200
+    ],
+    "og": "/images/og/service-counselling.jpg"
+  },
+  "illustrations/service-dinacharya": {
+    "w": 1200,
+    "h": 896,
+    "widths": [
+      480,
+      800,
+      1200
+    ]
+  },
+  "illustrations/service-health-assessment": {
+    "w": 1200,
+    "h": 896,
+    "widths": [
+      480,
+      800,
+      1200
+    ],
+    "og": "/images/og/service-health-assessment.jpg"
+  },
+  "illustrations/service-nadi-pariksha": {
+    "w": 1200,
+    "h": 896,
+    "widths": [
+      480,
+      800,
+      1200
+    ],
+    "og": "/images/og/service-nadi-pariksha.jpg"
+  },
+  "illustrations/service-online-consultation": {
+    "w": 1200,
+    "h": 896,
+    "widths": [
+      480,
+      800,
+      1200
+    ]
+  },
+  "illustrations/service-shirodhara": {
+    "w": 1200,
+    "h": 896,
+    "widths": [
+      480,
+      800,
+      1200
+    ],
+    "og": "/images/og/service-shirodhara.jpg"
+  },
+  "illustrations/service-therapeutic-yoga": {
+    "w": 1200,
+    "h": 896,
+    "widths": [
+      480,
+      800,
+      1200
+    ],
+    "og": "/images/og/service-therapeutic-yoga.jpg"
+  },
+  "editorial/article-breathing": {
+    "w": 1024,
+    "h": 768,
+    "widths": [
+      480,
+      800,
+      1024
+    ],
+    "og": "/images/og/article-breathing.jpg"
+  },
+  "editorial/article-nutrition": {
+    "w": 1024,
+    "h": 768,
+    "widths": [
+      480,
+      800,
+      1024
+    ],
+    "og": "/images/og/article-nutrition.jpg"
+  },
+  "editorial/article-prakriti": {
+    "w": 1024,
+    "h": 768,
+    "widths": [
+      480,
+      800,
+      1024
+    ],
+    "og": "/images/og/article-prakriti.jpg"
+  },
+  "editorial/program-metabolic": {
+    "w": 1024,
+    "h": 768,
+    "widths": [
+      480,
+      800,
+      1024
+    ]
+  },
+  "editorial/program-stress-sleep": {
+    "w": 1024,
+    "h": 768,
+    "widths": [
+      480,
+      800,
+      1024
+    ]
+  }
+}

@@ -3,11 +3,14 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import { CONTACT, LOGO, SERVICES } from '../data'
 import { useI18n } from '../i18n'
 import { Button, Icon } from '../ui'
+import Picture from './Picture'
 import { LanguageInline, LanguageMenu } from './LanguageSwitcher'
 
-export function Logo({ className = '' }) {
+/** The header logo is above the fold on every page (eager, normal priority so it never competes with the LCP image); other copies load lazily. */
+/** @param {{ className?: string, priority?: boolean }} props */
+export function Logo({ className = '', priority = false }) {
   return <Link to="/" className={`brand ${className}`} aria-label="AyurvedaVaidya — home">
-    <img src={LOGO} width="415" height="305" alt="AyurvedaVaidya.com — Ancient Wisdom. Modern Wellbeing."/>
+    <Picture image={LOGO} alt="AyurvedaVaidya.com — Ancient Wisdom. Modern Wellbeing." sizes="(max-width: 760px) 100px, 140px" loading={priority ? 'eager' : 'lazy'}/>
   </Link>
 }
 
@@ -83,7 +86,7 @@ export default function Header() {
     <a className="skip-link" href="#main-content">{t('nav.skip')}</a>
     <header className={`site-header ${scrolled ? 'is-scrolled' : ''}`}>
       <div className="nav-shell">
-        <Logo/>
+        <Logo priority/>
         <nav className="desktop-nav" aria-label="Primary">
           {LINKS.map(([key, to]) => key === 'services'
             ? <div key={key} className="menu-wrap" onMouseEnter={() => setMegaOpen(true)} onMouseLeave={() => setMegaOpen(false)} onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setMegaOpen(false) }}>
