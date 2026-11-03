@@ -47,8 +47,8 @@ export default function Footer() {
 export function MobileActionBar() {
   const { t } = useI18n()
   return <div className="mobile-bar">
-    <a href={CONTACT.phoneHref}><Icon name="phone"/>{t('nav.call')}</a>
-    <a href={CONTACT.emailHref}><Icon name="mail"/>Email</a>
-    <Link to="/book-consultation/" className="mobile-bar-book"><Icon name="calendar"/>{t('nav.book')}</Link>
+    <a href={CONTACT.phoneHref} aria-label={`${t('nav.call')} ${CONTACT.phone}`}><Icon name="phone"/><span>{t('nav.call')}</span></a>
+    <a href={CONTACT.emailHref} aria-label={`${t('contact.emailLabel')} ${CONTACT.email}`}><Icon name="mail"/><span>{t('contact.emailLabel')}</span></a>
+    <Link to="/book-consultation/" className="mobile-bar-book"><Icon name="calendar"/><span>{t('nav.book')}</span></Link>
   </div>
 }

@@ -51,7 +51,7 @@ final class EnquiryValidator
             'time' => $text('time'),
             'message' => trim(self::clean(self::scalar($input['message'] ?? ''), true)),
             'consent' => ($consent === true || in_array($consent, ['on', 'yes', 'true', '1'], true)) ? 'yes' : '',
-            'lang' => in_array($text('lang'), ['en', 'es', 'ru'], true) ? $text('lang') : 'en',
+            'lang' => in_array($text('lang'), ['en', 'de', 'fr', 'it', 'es', 'ar', 'ru', 'ja', 'zh', 'nl', 'pt', 'hi'], true) ? $text('lang') : 'en',
             'page' => mb_substr($text('_page'), 0, 300),
             'form' => preg_match('/^[a-z-]{1,40}$/', $text('_form')) ? $text('_form') : 'consultation',
         ];
