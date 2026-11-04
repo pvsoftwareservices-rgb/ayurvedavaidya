@@ -38,12 +38,12 @@ export const PROCESS_IMAGES = ['illustrations/service-online-consultation', 'ill
 
 export const GALLERY = ['clinic/clinic-visit-01', 'clinic/clinic-visit-03', 'clinic/clinic-visit-04', 'clinic/clinic-visit-02', 'clinic/clinic-visit-05', DOCTOR_IMAGES.profile]
 
-// Real client meetups, academic events and yoga sessions for the homepage hero wall, split into three drifting columns.
+// Real client meetups and academic events (group photos only, no solo shots) for the homepage hero wall, split into three drifting columns.
 const clientPhoto = (n, kind) => ({ image: `community/client-${String(n).padStart(2, '0')}`, kind })
 export const CLIENT_WALL = [
-  [clientPhoto(6, 'meetup'), clientPhoto(9, 'event'), clientPhoto(1, 'meetup'), clientPhoto(14, 'yoga'), clientPhoto(12, 'meetup')],
-  [clientPhoto(2, 'meetup'), clientPhoto(8, 'yoga'), clientPhoto(13, 'meetup'), clientPhoto(11, 'event'), clientPhoto(4, 'meetup')],
-  [clientPhoto(7, 'meetup'), clientPhoto(15, 'event'), clientPhoto(10, 'meetup'), clientPhoto(3, 'meetup'), clientPhoto(16, 'yoga'), clientPhoto(5, 'yoga')],
+  [clientPhoto(6, 'meetup'), clientPhoto(9, 'event'), clientPhoto(1, 'meetup'), clientPhoto(12, 'meetup')],
+  [clientPhoto(2, 'meetup'), clientPhoto(13, 'meetup'), clientPhoto(11, 'event'), clientPhoto(4, 'meetup')],
+  [clientPhoto(7, 'meetup'), clientPhoto(15, 'event'), clientPhoto(10, 'meetup'), clientPhoto(3, 'meetup')],
 ]
 export const CLIENT_AVATARS = [6, 12, 2, 7].map((n) => `community/client-${String(n).padStart(2, '0')}`)
 

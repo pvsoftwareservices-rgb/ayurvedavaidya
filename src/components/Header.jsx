@@ -5,6 +5,7 @@ import { useI18n } from '../i18n'
 import { Button, Icon } from '../ui'
 import Picture from './Picture'
 import { LanguageInline, LanguageMenu } from './LanguageSwitcher'
+import MusicToggle from './MusicToggle'
 
 /** The header logo is above the fold on every page (eager, normal priority so it never competes with the LCP image); other copies load lazily. */
 /** @param {{ className?: string, priority?: boolean }} props */
@@ -96,6 +97,7 @@ export default function Header() {
             : <NavLink key={key} className="nav-link" to={to} end={to === '/'}>{t(`nav.${key}`)}</NavLink>)}
         </nav>
         <div className="header-actions">
+          <MusicToggle/>
           <LanguageMenu/>
           <a className="header-phone" href={CONTACT.phoneHref} aria-label={`${t('nav.call')} ${CONTACT.phone}`}><Icon name="phone"/></a>
           <Button to="/book-consultation/" variant="green" className="header-cta" icon="calendar">{t('nav.book')}</Button>

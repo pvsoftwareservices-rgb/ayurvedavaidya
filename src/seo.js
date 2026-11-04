@@ -59,7 +59,7 @@ const PERSON = {
   jobTitle: 'Director & Chief Medical Officer',
   description: en.doctor.about[0],
   honorificSuffix: QUALIFICATIONS.slice(0, 3).join(', '),
-  worksFor: { '@type': 'Organization', name: 'Ayurveda Clinic' },
+  worksFor: { '@type': 'Organization', name: 'AyurvedaVaidya Clinic' },
   knowsAbout: ['Ayurveda', 'Clinical Psychology', 'Nutrition', 'Yoga', 'Integrative Healthcare'],
 }
 
@@ -141,7 +141,7 @@ export const ROUTES = [
     path: '/about',
     type: 'profile',
     title: titled(`About ${en.doctor.name}, Ayurvedic Physician`),
-    description: 'Dr. Tejendra Singh — BAMS, MD (Ayu.), MAPC (Clin. Psych.) — Ayurvedic physician, academician and Director & CMO at Ayurveda Clinic. Qualifications and approach.',
+    description: 'Dr. Tejendra Singh — BAMS, MD (Ayu.), MAPC (Clin. Psych.) — Ayurvedic physician, academician and Director & CMO at AyurvedaVaidya Clinic. Qualifications and approach.',
     share: shareImage(DOCTOR_IMAGES.profile, en.doctor.profileAlt),
     hero: DOCTOR_IMAGES.profile,
     heroSizes: '(max-width: 900px) 80vw, 460px',

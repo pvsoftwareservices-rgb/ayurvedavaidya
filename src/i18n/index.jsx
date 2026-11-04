@@ -4,13 +4,26 @@ import { getRouteMeta } from '../seo'
 import en from './en'
 
 export const LANGUAGES = [
-  { code: 'en', label: 'English', short: 'EN' },
-  { code: 'es', label: 'Español', short: 'ES' },
-  { code: 'ru', label: 'Русский', short: 'RU' },
+  { code: 'en', label: 'English', short: 'EN', flag: 'gb' },
+  { code: 'de', label: 'Deutsch', short: 'DE', flag: 'de' },
+  { code: 'fr', label: 'Français', short: 'FR', flag: 'fr' },
+  { code: 'it', label: 'Italiano', short: 'IT', flag: 'it' },
+  { code: 'es', label: 'Español', short: 'ES', flag: 'es' },
+  { code: 'ar', label: 'العربية', short: 'AR', flag: 'ae', dir: 'rtl' },
+  { code: 'ru', label: 'Русский', short: 'RU', flag: 'ru' },
+  { code: 'ja', label: '日本語', short: 'JA', flag: 'jp' },
+  { code: 'zh', label: '中文', short: 'ZH', flag: 'cn' },
+  { code: 'nl', label: 'Nederlands', short: 'NL', flag: 'nl' },
+  { code: 'pt', label: 'Português', short: 'PT', flag: 'pt' },
+  { code: 'hi', label: 'हिन्दी', short: 'HI', flag: 'in' },
 ]
 
-// English ships with the page; Spanish and Russian are separate chunks loaded only when chosen.
-const LOADERS = { es: () => import('./es'), ru: () => import('./ru') }
+// English ships with the page; every other language is a separate chunk loaded only when chosen.
+const LOADERS = {
+  de: () => import('./de'), fr: () => import('./fr'), it: () => import('./it'), es: () => import('./es'),
+  ar: () => import('./ar'), ru: () => import('./ru'), ja: () => import('./ja'), zh: () => import('./zh'),
+  nl: () => import('./nl'), pt: () => import('./pt'), hi: () => import('./hi'),
+}
 const CODES = LANGUAGES.map((l) => l.code)
 const STORAGE_KEY = 'av-language'
 const DEFAULT_LANGUAGE = 'en'
@@ -60,7 +73,10 @@ export function LanguageProvider({ children }) {
     try { window.localStorage.setItem(STORAGE_KEY, code) } catch { /* storage unavailable: keep in memory only */ }
   }, [activate])
 
-  useEffect(() => { document.documentElement.lang = lang }, [lang])
+  useEffect(() => {
+    document.documentElement.lang = lang
+    document.documentElement.dir = LANGUAGES.find((l) => l.code === lang)?.dir ?? 'ltr'
+  }, [lang])
 
   const value = useMemo(() => {
     const dictionary = dictionaries[lang] ?? en

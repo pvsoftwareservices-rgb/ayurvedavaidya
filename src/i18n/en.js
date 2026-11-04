@@ -8,13 +8,13 @@ const en = {
     home: 'Home', about: 'About Dr. Tejendra', services: 'Services', programs: 'Programs', journal: 'Journal', contact: 'Contact',
     book: 'Book a Consultation', open: 'Open navigation', close: 'Close navigation', skip: 'Skip to content',
     megaTag: 'Ayurveda 360°', megaTitle: 'Four disciplines. One personal plan.', allServices: 'Explore all services',
-    language: 'Language', call: 'Call', menu: 'Menu', breadcrumb: 'Breadcrumb',
+    language: 'Language', music: 'Background music', call: 'Call', menu: 'Menu', breadcrumb: 'Breadcrumb',
   },
   common: { explore: 'Explore', learnMore: 'Learn more', viewAll: 'View all', step: 'Step', of: 'of' },
   doctor: {
     name: 'Dr. Tejendra Singh',
     headline: 'Ayurvedic Physician · Academician · Wellness Expert',
-    role: 'Director & CMO, Ayurveda Clinic',
+    role: 'Director & CMO, AyurvedaVaidya Clinic',
     portraitAlt: 'Dr. Tejendra Singh, Ayurvedic physician, at his consultation desk',
     profileAlt: 'Dr. Tejendra Singh in a white coat with a stethoscope, seated in his clinic',
     qualifications: {
@@ -29,12 +29,12 @@ const en = {
     about: [
       'Dr. Tejendra Singh is an Ayurvedic physician, academician and wellness expert with specialized training in Ayurveda, Clinical Psychology, Nutrition and Integrative Healthcare.',
       'He completed his BAMS and MD (Ayurveda) and is further qualified in MAPC (Clinical Psychology), DNHE, CCIC and CCIM. He is currently pursuing doctoral research (PhD) in Ayurveda.',
-      'He previously served as an Assistant Professor at a university, contributing to Ayurvedic education, clinical training and research. Today, as Director & Chief Medical Officer (CMO) at Ayurveda Clinic, he oversees holistic wellness programs, Panchakarma therapies, lifestyle management and integrative patient care.',
+      'He previously served as an Assistant Professor at a university, contributing to Ayurvedic education, clinical training and research. Today, as Director & Chief Medical Officer (CMO) at AyurvedaVaidya Clinic, he oversees holistic wellness programs, Panchakarma therapies, lifestyle management and integrative patient care.',
       'His work blends authentic Ayurvedic wisdom with modern wellness approaches to support physical, mental and preventive health.',
     ],
     roles: [
       { period: 'Earlier', title: 'Assistant Professor', org: 'University faculty', text: 'Contributed to Ayurvedic education, clinical training and research.' },
-      { period: 'Present', title: 'Director & Chief Medical Officer', org: 'Ayurveda Clinic', text: 'Oversees holistic wellness programs, Panchakarma therapies, lifestyle management and integrative patient care.' },
+      { period: 'Present', title: 'Director & Chief Medical Officer', org: 'AyurvedaVaidya Clinic', text: 'Oversees holistic wellness programs, Panchakarma therapies, lifestyle management and integrative patient care.' },
     ],
   },
   hero: {
@@ -202,7 +202,7 @@ const en = {
     eyebrow: 'Contact & booking',
     title: 'Book your consultation',
     lead: 'Reach out by phone or email, or send a consultation request below. Please do not include detailed medical history or emergency information.',
-    phoneLabel: 'Call', emailLabel: 'Email', clinicLabel: 'Clinic', clinicValue: 'Ayurveda Clinic',
+    phoneLabel: 'Call', emailLabel: 'Email', clinicLabel: 'Clinic', clinicValue: 'AyurvedaVaidya Clinic',
     modesLabel: 'Consultation modes', modesValue: 'Online · Phone · In-clinic',
     formTitle: 'Request a consultation',
     form: {
@@ -242,7 +242,7 @@ const en = {
   },
   about: {
     eyebrow: 'About the physician',
-    lead: 'Ayurvedic physician, academician and wellness expert — Director & CMO at Ayurveda Clinic.',
+    lead: 'Ayurvedic physician, academician and wellness expert — Director & CMO at AyurvedaVaidya Clinic.',
     bioTitle: 'Rooted in classical Ayurveda. Informed by modern science.',
     quote: 'Lasting health is built when body, mind and daily life are cared for together.',
     quoteBy: 'Our philosophy of care',

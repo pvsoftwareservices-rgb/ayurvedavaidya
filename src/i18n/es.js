@@ -8,13 +8,13 @@ const es = {
     home: 'Inicio', about: 'Sobre el Dr. Tejendra', services: 'Servicios', programs: 'Programas', journal: 'Blog', contact: 'Contacto',
     book: 'Reservar consulta', open: 'Abrir navegación', close: 'Cerrar navegación', skip: 'Saltar al contenido',
     megaTag: 'Ayurveda 360°', megaTitle: 'Cuatro disciplinas. Un plan personal.', allServices: 'Ver todos los servicios',
-    language: 'Idioma', call: 'Llamar', menu: 'Menú', breadcrumb: 'Ruta de navegación',
+    language: 'Idioma', music: 'Música de fondo', call: 'Llamar', menu: 'Menú', breadcrumb: 'Ruta de navegación',
   },
   common: { explore: 'Explorar', learnMore: 'Saber más', viewAll: 'Ver todo', step: 'Paso', of: 'de' },
   doctor: {
     name: 'Dr. Tejendra Singh',
     headline: 'Médico ayurvédico · Académico · Experto en bienestar',
-    role: 'Director y CMO, Ayurveda Clinic',
+    role: 'Director y CMO, AyurvedaVaidya Clinic',
     portraitAlt: 'El Dr. Tejendra Singh, médico ayurvédico, en su escritorio de consulta',
     profileAlt: 'El Dr. Tejendra Singh con bata blanca y estetoscopio, sentado en su clínica',
     qualifications: {
@@ -29,12 +29,12 @@ const es = {
     about: [
       'El Dr. Tejendra Singh es médico ayurvédico, académico y experto en bienestar, con formación especializada en Ayurveda, Psicología Clínica, Nutrición y Salud Integrativa.',
       'Completó su BAMS y su MD (Ayurveda) y cuenta además con las titulaciones MAPC (Psicología Clínica), DNHE, CCIC y CCIM. Actualmente realiza su investigación doctoral (PhD) en Ayurveda.',
-      'Anteriormente fue Profesor Asistente en una universidad, donde contribuyó a la enseñanza del Ayurveda, la formación clínica y la investigación. Hoy, como Director y Director Médico (CMO) de Ayurveda Clinic, supervisa programas de bienestar holístico, terapias de Panchakarma, gestión del estilo de vida y atención integrativa al paciente.',
+      'Anteriormente fue Profesor Asistente en una universidad, donde contribuyó a la enseñanza del Ayurveda, la formación clínica y la investigación. Hoy, como Director y Director Médico (CMO) de AyurvedaVaidya Clinic, supervisa programas de bienestar holístico, terapias de Panchakarma, gestión del estilo de vida y atención integrativa al paciente.',
       'Su trabajo une la auténtica sabiduría ayurvédica con enfoques modernos de bienestar para apoyar la salud física, mental y preventiva.',
     ],
     roles: [
       { period: 'Antes', title: 'Profesor Asistente', org: 'Docencia universitaria', text: 'Contribuyó a la enseñanza del Ayurveda, la formación clínica y la investigación.' },
-      { period: 'Actualidad', title: 'Director y Director Médico (CMO)', org: 'Ayurveda Clinic', text: 'Supervisa programas de bienestar holístico, terapias de Panchakarma, gestión del estilo de vida y atención integrativa.' },
+      { period: 'Actualidad', title: 'Director y Director Médico (CMO)', org: 'AyurvedaVaidya Clinic', text: 'Supervisa programas de bienestar holístico, terapias de Panchakarma, gestión del estilo de vida y atención integrativa.' },
     ],
   },
   hero: {
@@ -199,7 +199,7 @@ const es = {
     eyebrow: 'Contacto y reservas',
     title: 'Reserve su consulta',
     lead: 'Contáctenos por teléfono o correo electrónico, o envíe una solicitud de consulta a continuación. No incluya historiales médicos detallados ni información de emergencia.',
-    phoneLabel: 'Teléfono', emailLabel: 'Correo electrónico', clinicLabel: 'Clínica', clinicValue: 'Ayurveda Clinic',
+    phoneLabel: 'Teléfono', emailLabel: 'Correo electrónico', clinicLabel: 'Clínica', clinicValue: 'AyurvedaVaidya Clinic',
     modesLabel: 'Modalidades de consulta', modesValue: 'En línea · Teléfono · En la clínica',
     formTitle: 'Solicitar una consulta',
     form: {
@@ -239,7 +239,7 @@ const es = {
   },
   about: {
     eyebrow: 'Sobre el médico',
-    lead: 'Médico ayurvédico, académico y experto en bienestar — Director y CMO de Ayurveda Clinic.',
+    lead: 'Médico ayurvédico, académico y experto en bienestar — Director y CMO de AyurvedaVaidya Clinic.',
     bioTitle: 'Arraigado en el Ayurveda clásico. Guiado por la ciencia moderna.',
     quote: 'La salud duradera se construye cuando cuerpo, mente y vida diaria se cuidan juntos.',
     quoteBy: 'Nuestra filosofía de cuidado',

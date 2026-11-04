@@ -79,7 +79,7 @@ function MeetDoctor() {
         <Reveal variant="clip" className="doctor-photo">
           <Picture image={DOCTOR_IMAGES.desk} alt={t('doctor.portraitAlt')} sizes="(max-width: 900px) 92vw, 520px"/>
         </Reveal>
-        <div className="doctor-badge"><Icon name="shield"/><span><strong>{t('intro.badge')}</strong>Ayurveda Clinic</span></div>
+        <div className="doctor-badge"><Icon name="shield"/><span><strong>{t('intro.badge')}</strong>AyurvedaVaidya Clinic</span></div>
       </div>
       <div className="doctor-copy">
         <Reveal variant="up"><Eyebrow>{t('intro.eyebrow')}</Eyebrow><h2 id="doctor-title">{t('intro.title')}</h2></Reveal>
